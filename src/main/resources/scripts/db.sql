@@ -1,4 +1,4 @@
-create database bug_tracing encoding 'utf8';
+create database bug_tracker encoding 'utf8';
 
 create table admins(
     id int,

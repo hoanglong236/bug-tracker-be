@@ -29,10 +29,11 @@ create table projects(
 	id int,
 	name varchar(100) not null,
 	note varchar(256) not null,
+	delete_flag boolean not null default false,
 	created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
     primary key (id)
-)
+);
 
 create table project_roles(
     id int,
@@ -41,7 +42,7 @@ create table project_roles(
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
     primary key (id)
-)
+);
 
 create table project_members(
     id int,
@@ -49,13 +50,14 @@ create table project_members(
     user_id int not null,
     project_role_id int not null,
     enable_flag boolean not null default true,
+    delete_flag boolean not null default false,
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
     primary key (id),
     foreign key (project_id) references projects(id),
     foreign key (user_id) references users(id),
     foreign key (project_role_id) references project_roles(id)
-)
+);
 
 create table post_phases(
     id int,
@@ -82,7 +84,7 @@ create table posts(
     foreign key (reporter_id) references project_members(id),
     foreign key (assigner_id) references project_members(id),
     foreign key (post_phase_id) references post_phases(id)
-)
+);
 
 create table post_files(
     id int,
@@ -93,6 +95,6 @@ create table post_files(
     updated_at timestamp not null default current_timestamp,
     primary key (id),
     foreign key (post_id) references posts(id)
-)
+);
 
 create sequence projects_seq increment 1 start 1;

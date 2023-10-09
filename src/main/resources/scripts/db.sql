@@ -28,7 +28,8 @@ create table users(
 create table projects(
 	id int,
 	name varchar(100) not null,
-	note varchar(256) not null,
+	note varchar(256),
+	close_flag boolean not null default false,
 	delete_flag boolean not null default false,
 	created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
@@ -38,7 +39,8 @@ create table projects(
 create table project_roles(
     id int,
     name varchar(50) not null,
-    note varchar(256) not null,
+    note varchar(256),
+    delete_flag boolean not null default false,
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
     primary key (id)
@@ -98,3 +100,5 @@ create table post_files(
 );
 
 create sequence projects_seq increment 1 start 1;
+create sequence project_roles_seq increment 1 start 1;
+create sequence project_members_seq increment 1 start 1;

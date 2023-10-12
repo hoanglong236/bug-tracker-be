@@ -18,8 +18,12 @@ import java.util.List;
 @RequestMapping("api/v1/projects")
 public class ProjectController {
 
+    private final ProjectService projectService;
+
     @Autowired
-    private ProjectService projectService;
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
+    }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)

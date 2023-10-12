@@ -22,24 +22,6 @@ public class Project {
     public Project() {
     }
 
-    public Project(
-            Long id,
-            String name,
-            String note,
-            Boolean closeFlag,
-            Boolean deleteFlag,
-            LocalDateTime createdAt,
-            LocalDateTime updatedAt
-    ) {
-        this.id = id;
-        this.name = name;
-        this.note = note;
-        this.closeFlag = closeFlag;
-        this.deleteFlag = deleteFlag;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
     public Long getId() {
         return id;
     }

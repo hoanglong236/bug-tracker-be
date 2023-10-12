@@ -8,6 +8,7 @@ import com.spring.bugtrackerbe.project.entities.Project;
 import com.spring.bugtrackerbe.project.mappers.ProjectMapper;
 import com.spring.bugtrackerbe.project.messages.ProjectMessage;
 import com.spring.bugtrackerbe.project.repositories.ProjectRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class ProjectService {
 
     private final ProjectMapper projectMapper;
 
+    @Autowired
     public ProjectService(ProjectRepository projectRepository, ProjectMapper projectMapper) {
         this.projectRepository = projectRepository;
         this.projectMapper = projectMapper;

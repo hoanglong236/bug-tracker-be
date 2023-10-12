@@ -1,6 +1,7 @@
 package com.spring.bugtrackerbe.project.repositories;
 
 import com.spring.bugtrackerbe.project.entities.Project;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -20,70 +21,74 @@ class ProjectRepositoryTest {
     @Autowired
     private ProjectRepository projectRepository;
 
-    private Project createSetupProject(String projectName, boolean deleteFlag) {
+    private Project setUp_createProject() {
+        return this.setUp_createProject(false);
+    }
+
+    private Project setUp_createDeletedProject() {
+        return this.setUp_createProject(true);
+    }
+
+    private Project setUp_createProject(boolean deleteFlag) {
         final Project project = new Project();
 
-        project.setName(projectName);
+        project.setName(RandomStringUtils.randomAlphanumeric(10));
         project.setDeleteFlag(deleteFlag);
 
         return this.testEntityManager.persistAndFlush(project);
     }
 
-    private Project createSetupProject(String projectName) {
-        return createSetupProject(projectName, false);
-    }
-
-    private Project createSetupDeletedProject(String projectName) {
-        return createSetupProject(projectName, true);
-    }
-
     @Test
     void whenFindAll_thenReturnProjects() {
-        final Project project = this.createSetupProject("Test project");
-        final List<Project> projects = this.projectRepository.findAll();
+        final Project project = this.setUp_createProject();
+        final Project project2 = this.setUp_createProject();
+        final List<Project> actualProjects = this.projectRepository.findAll();
 
-        assertEquals(1, projects.size());
-        assertEquals(project.getId(), projects.get(0).getId());
+        assertEquals(2, actualProjects.size());
+        assertTrue(actualProjects.contains(project));
+        assertTrue(actualProjects.contains(project2));
     }
 
     @Test
     void givenNothing_whenFindAll_thenReturnEmptyList() {
-        final List<Project> projects = this.projectRepository.findAll();
-        assertEquals(0, projects.size());
+        final List<Project> actualProjects = this.projectRepository.findAll();
+        assertTrue(actualProjects.isEmpty());
     }
 
     @Test
     void givenDeletedProjects_whenFindAll_thenReturnEmptyList() {
-        this.createSetupDeletedProject("Deleted project");
-        final List<Project> projects = this.projectRepository.findAll();
-        assertEquals(0, projects.size());
+        this.setUp_createDeletedProject();
+        final List<Project> actualProjects = this.projectRepository.findAll();
+        assertTrue(actualProjects.isEmpty());
     }
 
     @Test
     void whenFindById_thenReturnProjectOptional() {
-        final Project project = this.createSetupProject("Test project");
-        final Optional<Project> projectOptional = this.projectRepository.findById(project.getId());
+        final Project project = this.setUp_createProject();
+        final Optional<Project> actualProjectOptional =
+                this.projectRepository.findById(project.getId());
 
-        assertFalse(projectOptional.isEmpty());
-        assertEquals(project.getName(), projectOptional.get().getName());
+        assertFalse(actualProjectOptional.isEmpty());
+        assertEquals(project, actualProjectOptional.get());
     }
 
     @Test
     void givenNothing_whenFindById_thenReturnEmptyOptional() {
-        final Optional<Project> projectOptional = this.projectRepository.findById(1L);
-        assertTrue(projectOptional.isEmpty());
+        final Optional<Project> actualProjectOptional = this.projectRepository.findById(1L);
+        assertTrue(actualProjectOptional.isEmpty());
     }
 
     @Test
     void givenDeletedProjects_whenFindById_thenReturnEmptyOptional() {
-        final Project deletedProject = this.createSetupDeletedProject("Deleted project");
-        final Optional<Project> projectOptional = this.projectRepository.findById(deletedProject.getId());
-        assertTrue(projectOptional.isEmpty());
+        final Project deletedProject = this.setUp_createDeletedProject();
+        final Optional<Project> actualProjectOptional =
+                this.projectRepository.findById(deletedProject.getId());
+        assertTrue(actualProjectOptional.isEmpty());
     }
 
     @Test
     void whenExistsProjectName_thenReturnTrue() {
-        final Project project = this.createSetupProject("Test project");
+        final Project project = this.setUp_createProject();
         assertTrue(this.projectRepository.existsProjectName(project.getName()));
     }
 
@@ -94,7 +99,7 @@ class ProjectRepositoryTest {
 
     @Test
     void givenDeletedProjects_whenExistsProjectName_thenReturnFalse() {
-        final Project deletedProject = this.createSetupDeletedProject("Deleted project");
+        final Project deletedProject = this.setUp_createDeletedProject();
         assertFalse(this.projectRepository.existsProjectName(deletedProject.getName()));
     }
 }

@@ -11,6 +11,7 @@ import com.spring.bugtrackerbe.project.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +67,7 @@ public class ProjectService {
         project.setName(projectRequestDTO.getName());
         project.setNote(projectRequestDTO.getNote());
         project.setCloseFlag(projectRequestDTO.getCloseFlag());
+        project.setUpdatedAt(LocalDateTime.now());
 
         final Project updatedProject = this.projectRepository.save(project);
         return this.projectMapper.toResponse(updatedProject);
@@ -79,6 +81,7 @@ public class ProjectService {
 
         final Project project = projectOptional.get();
         project.setDeleteFlag(true);
+        project.setUpdatedAt(LocalDateTime.now());
         this.projectRepository.save(project);
     }
 }

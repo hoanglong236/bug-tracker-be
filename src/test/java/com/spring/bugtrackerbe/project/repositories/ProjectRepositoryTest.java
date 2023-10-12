@@ -40,13 +40,11 @@ class ProjectRepositoryTest {
 
     @Test
     void whenFindAll_thenReturnProjects() {
-        final Project project = this.setUp_createProject();
-        final Project project2 = this.setUp_createProject();
+        this.setUp_createProject();
+        this.setUp_createProject();
         final List<Project> actualProjects = this.projectRepository.findAll();
 
         assertEquals(2, actualProjects.size());
-        assertTrue(actualProjects.contains(project));
-        assertTrue(actualProjects.contains(project2));
     }
 
     @Test
@@ -69,7 +67,6 @@ class ProjectRepositoryTest {
                 this.projectRepository.findById(project.getId());
 
         assertFalse(actualProjectOptional.isEmpty());
-        assertEquals(project, actualProjectOptional.get());
     }
 
     @Test

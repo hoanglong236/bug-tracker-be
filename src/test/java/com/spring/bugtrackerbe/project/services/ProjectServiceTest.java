@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Collections;
@@ -21,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProjectServiceTest {
@@ -72,13 +72,12 @@ class ProjectServiceTest {
         final ProjectResponseDTO responseDTO = this.setUp_createProjectResponseDTO(1L);
         final ProjectResponseDTO responseDTO2 = this.setUp_createProjectResponseDTO(2L);
 
-        Mockito.when(this.projectRepository.findAll()).thenReturn(projects);
-        Mockito.when(this.projectMapper.toResponse(project)).thenReturn(responseDTO);
-        Mockito.when(this.projectMapper.toResponse(project2)).thenReturn(responseDTO2);
+        when(this.projectRepository.findAll()).thenReturn(projects);
+        when(this.projectMapper.toResponse(project)).thenReturn(responseDTO);
+        when(this.projectMapper.toResponse(project2)).thenReturn(responseDTO2);
 
         final List<ProjectResponseDTO> actualResponseDTOs = this.projectService.getProjects();
 
-        Mockito.verify(this.projectRepository).findAll();
         assertEquals(projects.size(), actualResponseDTOs.size());
         assertTrue(actualResponseDTOs.contains(responseDTO));
         assertTrue(actualResponseDTOs.contains(responseDTO2));
@@ -86,11 +85,9 @@ class ProjectServiceTest {
 
     @Test
     void givenNothing_whenGetProjects_thenReturnEmptyList() {
-        Mockito.when(this.projectRepository.findAll()).thenReturn(Collections.emptyList());
-
+        when(this.projectRepository.findAll()).thenReturn(Collections.emptyList());
         final List<ProjectResponseDTO> actualResponseDTOs = this.projectService.getProjects();
 
-        Mockito.verify(this.projectRepository).findAll();
         assertTrue(actualResponseDTOs.isEmpty());
     }
 
@@ -100,24 +97,23 @@ class ProjectServiceTest {
         final Project project = this.setUp_createProject(projectId);
         final ProjectResponseDTO responseDTO = this.setUp_createProjectResponseDTO(projectId);
 
-        Mockito.when(this.projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-        Mockito.when(this.projectMapper.toResponse(project)).thenReturn(responseDTO);
+        when(this.projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(this.projectMapper.toResponse(project)).thenReturn(responseDTO);
 
-        final ProjectResponseDTO actualResponseDTO = this.projectService.getProjectById(projectId);
+        final ProjectResponseDTO actualResponseDTO =
+                this.projectService.getProjectById(projectId);
 
-        Mockito.verify(this.projectRepository).findById(projectId);
         assertEquals(responseDTO, actualResponseDTO);
     }
 
     @Test
     void givenNotFoundProjectId_whenGetProjectById_thenThrowResourcesNotFoundException() {
         final long notFoundProjectId = 1L;
-        Mockito.when(this.projectRepository.findById(notFoundProjectId))
+        when(this.projectRepository.findById(notFoundProjectId))
                 .thenReturn(Optional.empty());
 
         assertThrowsExactly(ResourcesNotFoundException.class,
                 () -> this.projectService.getProjectById(notFoundProjectId));
-        Mockito.verify(this.projectRepository).findById(notFoundProjectId);
     }
 
     @Test
@@ -127,33 +123,28 @@ class ProjectServiceTest {
         final Project project = this.setUp_createProject(projectId);
         final ProjectResponseDTO responseDTO = this.setUp_createProjectResponseDTO(projectId);
 
-        Mockito.when(this.projectRepository.existsProjectName(projectRequestDTO.getName()))
+        when(this.projectRepository.existsProjectName(projectRequestDTO.getName()))
                 .thenReturn(Boolean.FALSE);
-        Mockito.when(this.projectMapper.toProject(projectRequestDTO))
-                .thenReturn(project);
-        Mockito.when(this.projectRepository.save(project)).thenReturn(project);
-        Mockito.when(this.projectMapper.toResponse(project)).thenReturn(responseDTO);
+        when(this.projectMapper.toProject(projectRequestDTO)).thenReturn(project);
+        when(this.projectRepository.save(project)).thenReturn(project);
+        when(this.projectMapper.toResponse(project)).thenReturn(responseDTO);
 
         final ProjectResponseDTO actualResponseDTO =
                 this.projectService.createProject(projectRequestDTO);
 
-        Mockito.verify(this.projectRepository).existsProjectName(projectRequestDTO.getName());
-        Mockito.verify(this.projectRepository).save(project);
-
         assertEquals(responseDTO, actualResponseDTO);
+        verify(this.projectRepository).save(project);
     }
 
     @Test
     void givenExistsName_whenCreateProject_thenThrowResourcesAlreadyExistsException() {
         final ProjectRequestDTO projectRequestDTO = this.setUp_createProjectRequestDTO();
-        Mockito.when(this.projectRepository.existsProjectName(projectRequestDTO.getName()))
+        when(this.projectRepository.existsProjectName(projectRequestDTO.getName()))
                 .thenReturn(Boolean.TRUE);
 
         assertThrowsExactly(ResourcesAlreadyExistsException.class,
                 () -> this.projectService.createProject(projectRequestDTO));
-
-        Mockito.verify(this.projectRepository).existsProjectName(projectRequestDTO.getName());
-        Mockito.verify(this.projectRepository, Mockito.never()).save(Mockito.any(Project.class));
+        verify(this.projectRepository, never()).save(any());
     }
 
     @Test
@@ -163,37 +154,28 @@ class ProjectServiceTest {
         final Project project = this.setUp_createProject(projectId);
         final ProjectResponseDTO responseDTO = this.setUp_createProjectResponseDTO(projectId);
 
-        Mockito.when(this.projectRepository.findById(projectId))
-                .thenReturn(Optional.of(project));
-        Mockito.when(this.projectRepository.existsProjectName(projectRequestDTO.getName()))
+        when(this.projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(this.projectRepository.existsProjectName(projectRequestDTO.getName()))
                 .thenReturn(Boolean.FALSE);
-        Mockito.when(this.projectRepository.save(project)).thenReturn(project);
-        Mockito.when(this.projectMapper.toResponse(project)).thenReturn(responseDTO);
+        when(this.projectRepository.save(project)).thenReturn(project);
+        when(this.projectMapper.toResponse(project)).thenReturn(responseDTO);
 
         final ProjectResponseDTO actualResponseDTO =
                 this.projectService.updateProject(projectId, projectRequestDTO);
 
-        Mockito.verify(this.projectRepository).findById(projectId);
-        Mockito.verify(this.projectRepository).existsProjectName(projectRequestDTO.getName());
-        Mockito.verify(this.projectRepository).save(project);
-
         assertEquals(responseDTO, actualResponseDTO);
+        verify(this.projectRepository).save(project);
     }
 
     @Test
     void givenNotFoundProjectId_whenUpdateProject_thenThrowResourcesNotFoundException() {
         final long notFoundProjectId = 1L;
         final ProjectRequestDTO projectRequestDTO = this.setUp_createProjectRequestDTO();
-
-        Mockito.when(this.projectRepository.findById(notFoundProjectId))
-                .thenReturn(Optional.empty());
+        when(this.projectRepository.findById(notFoundProjectId)).thenReturn(Optional.empty());
 
         assertThrowsExactly(ResourcesNotFoundException.class,
                 () -> this.projectService.updateProject(notFoundProjectId, projectRequestDTO));
-
-        Mockito.verify(this.projectRepository).findById(notFoundProjectId);
-        Mockito.verify(this.projectRepository, Mockito.never())
-                .save(Mockito.any(Project.class));
+        verify(this.projectRepository, never()).save(any());
     }
 
     @Test
@@ -202,31 +184,25 @@ class ProjectServiceTest {
         final ProjectRequestDTO projectRequestDTO = this.setUp_createProjectRequestDTO();
         final Project project = this.setUp_createProject(projectId);
 
-        Mockito.when(this.projectRepository.findById(projectId))
-                .thenReturn(Optional.of(project));
-        Mockito.when(this.projectRepository.existsProjectName(projectRequestDTO.getName()))
+        when(this.projectRepository.findById(projectId)).thenReturn(Optional.of(project));
+        when(this.projectRepository.existsProjectName(projectRequestDTO.getName()))
                 .thenReturn(Boolean.TRUE);
 
         assertThrowsExactly(ResourcesAlreadyExistsException.class,
                 () -> this.projectService.updateProject(projectId, projectRequestDTO));
-
-        Mockito.verify(this.projectRepository).existsProjectName(projectRequestDTO.getName());
-        Mockito.verify(this.projectRepository, Mockito.never())
-                .save(Mockito.any(Project.class));
+        verify(this.projectRepository, never()).save(any());
     }
 
     @Test
     void whenDeleteProjectById_thenDeleted() {
         final long projectId = 1L;
         final Project project = this.setUp_createProject(projectId);
-
-        Mockito.when(this.projectRepository.findById(projectId))
-                .thenReturn(Optional.of(project));
+        when(this.projectRepository.findById(projectId)).thenReturn(Optional.of(project));
 
         this.projectService.deleteProjectById(projectId);
 
         final ArgumentCaptor<Project> projectCaptor = ArgumentCaptor.forClass(Project.class);
-        Mockito.verify(this.projectRepository).save(projectCaptor.capture());
+        verify(this.projectRepository).save(projectCaptor.capture());
 
         final Project projectToSave = projectCaptor.getValue();
         assertTrue(projectToSave.getDeleteFlag());
@@ -235,13 +211,10 @@ class ProjectServiceTest {
     @Test
     void givenNotFoundProjectId_whenDeleteProjectById_thenThrowResourcesNotFoundException() {
         final long notFoundProjectId = 1L;
-        Mockito.when(this.projectRepository.findById(notFoundProjectId))
-                .thenReturn(Optional.empty());
+        when(this.projectRepository.findById(notFoundProjectId)).thenReturn(Optional.empty());
 
         assertThrowsExactly(ResourcesNotFoundException.class,
                 () -> this.projectService.deleteProjectById(notFoundProjectId));
-
-        Mockito.verify(this.projectRepository, Mockito.never())
-                .save(Mockito.any(Project.class));
+        verify(this.projectRepository, never()).save(any());
     }
 }

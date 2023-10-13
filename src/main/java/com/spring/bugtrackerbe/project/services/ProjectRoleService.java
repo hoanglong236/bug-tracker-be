@@ -76,6 +76,7 @@ public class ProjectRoleService {
         final ProjectRole projectRole = projectRoleOptional.get();
         projectRole.setDeleteFlag(true);
         projectRole.setUpdatedAt(LocalDateTime.now());
+
         this.projectRoleRepository.save(projectRole);
     }
 }

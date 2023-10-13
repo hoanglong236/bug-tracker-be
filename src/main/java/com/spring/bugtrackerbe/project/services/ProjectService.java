@@ -82,6 +82,7 @@ public class ProjectService {
         final Project project = projectOptional.get();
         project.setDeleteFlag(true);
         project.setUpdatedAt(LocalDateTime.now());
+
         this.projectRepository.save(project);
     }
 }

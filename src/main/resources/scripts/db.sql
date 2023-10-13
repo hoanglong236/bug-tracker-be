@@ -51,7 +51,6 @@ create table project_members(
     project_id int not null,
     user_id int not null,
     project_role_id int not null,
-    enable_flag boolean not null default true,
     delete_flag boolean not null default false,
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,

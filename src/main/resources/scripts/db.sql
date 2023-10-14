@@ -1,23 +1,11 @@
 create database bug_tracker encoding 'utf8';
 
-create table admins(
-    id int,
-    email varchar(100) not null unique,
-    password varchar(60) not null unique,
-    name varchar(50) not null,
-    phone varchar(15) not null,
-    delete_flag boolean not null default false,
-    created_at timestamp not null default current_timestamp,
-    updated_at timestamp not null default current_timestamp,
-    primary key (id)
-);
-
 create table users(
 	id int,
     email varchar(100) not null unique,
     password varchar(60) not null unique,
     name varchar(50) not null,
-    phone varchar(15) not null,
+    role varchar(10) not null,
     enable_flag boolean not null default true,
     delete_flag boolean not null default false,
     created_at timestamp not null default current_timestamp,
@@ -101,3 +89,4 @@ create table post_files(
 create sequence projects_seq increment 1 start 1;
 create sequence project_roles_seq increment 1 start 1;
 create sequence project_members_seq increment 1 start 1;
+create sequence users_seq increment 1 start 1;

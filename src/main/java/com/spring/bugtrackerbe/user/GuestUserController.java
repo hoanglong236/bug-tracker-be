@@ -16,8 +16,8 @@ public class GuestUserController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
-    public String login() {
+    @PostMapping("/ping")
+    public String ping() {
         return "Ping";
     }
 
@@ -31,5 +31,11 @@ public class GuestUserController {
     @ResponseStatus(HttpStatus.CREATED)
     public void adminSignUp(@RequestBody @Valid UserSignUpRequestDTO signUpRequestDTO) {
         this.userService.adminSignUp(signUpRequestDTO);
+    }
+
+    @PostMapping("/sign-in")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public UserSignInResponseDTO signIn(@RequestBody @Valid UserSignInRequestDTO signInRequestDTO) {
+        return this.userService.signIn(signInRequestDTO);
     }
 }

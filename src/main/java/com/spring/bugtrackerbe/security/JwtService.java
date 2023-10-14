@@ -16,7 +16,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET = "bug-tracker-be-sk";
+    private static final String SECRET = "b7cb81e3f6a9bbe2e6085ca096f0bedf30b124132435c691459382d4a990745a";
     private static final int SECOND_PER_DAY = 86400;
 
     public String extractUsername(String token) {

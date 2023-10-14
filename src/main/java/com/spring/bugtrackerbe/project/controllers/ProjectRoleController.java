@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/projects/roles")
+@RequestMapping("/api/v1/projects/roles")
 public class ProjectRoleController {
 
     private final ProjectRoleService projectRoleService;

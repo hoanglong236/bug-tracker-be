@@ -14,7 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/projects/members")
+@RequestMapping("/api/v1/projects/members")
 public class ProjectMemberController {
 
     private final ProjectMemberService projectMemberService;
@@ -26,7 +26,7 @@ public class ProjectMemberController {
 
     @GetMapping("/list-by-project/{projectId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<ProjectMemberResponseDTO> listByProjectId(@PathVariable long projectId) {
+    public List<ProjectMemberResponseDTO> listByProjectId(@PathVariable int projectId) {
         return this.projectMemberService.getMembersByProjectId(projectId);
     }
 
@@ -45,7 +45,7 @@ public class ProjectMemberController {
     @PutMapping("/change-role/{memberId}/{roleId}")
     @ResponseStatus(HttpStatus.OK)
     public ProjectMemberResponseDTO changeMemberRole(
-            @PathVariable Long memberId, @PathVariable Integer roleId) {
+            @PathVariable Integer memberId, @PathVariable Integer roleId) {
 
         try {
             return this.projectMemberService.changeMemberRole(memberId, roleId);
@@ -56,7 +56,7 @@ public class ProjectMemberController {
 
     @DeleteMapping("/delete/{memberId}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteMember(@PathVariable Long memberId) {
+    public void deleteMember(@PathVariable Integer memberId) {
         try {
             this.projectMemberService.deleteMemberById(memberId);
         } catch (ResourcesNotFoundException e) {

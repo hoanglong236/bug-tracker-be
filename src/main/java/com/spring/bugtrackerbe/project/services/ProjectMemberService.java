@@ -27,7 +27,7 @@ public class ProjectMemberService {
         this.projectMemberMapper = projectMemberMapper;
     }
 
-    public List<ProjectMemberResponseDTO> getMembersByProjectId(long projectId) {
+    public List<ProjectMemberResponseDTO> getMembersByProjectId(int projectId) {
         final List<ProjectMember> projectMembers =
                 this.projectMemberRepository.findByProjectId(projectId);
         return projectMembers.stream()
@@ -48,7 +48,7 @@ public class ProjectMemberService {
         return true;
     }
 
-    public ProjectMemberResponseDTO changeMemberRole(long memberId, int roleId) {
+    public ProjectMemberResponseDTO changeMemberRole(int memberId, int roleId) {
         final Optional<ProjectMember> memberOptional =
                 this.projectMemberRepository.findById(memberId);
         if (memberOptional.isEmpty()) {
@@ -66,7 +66,7 @@ public class ProjectMemberService {
         return this.projectMemberMapper.toResponse(savedMember);
     }
 
-    public void deleteMemberById(long memberId) {
+    public void deleteMemberById(int memberId) {
         final Optional<ProjectMember> projectMemberOptional = this.projectMemberRepository
                 .findById(memberId);
         if (projectMemberOptional.isEmpty()) {

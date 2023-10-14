@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public class ProjectResponseDTO {
 
-    private Long id;
+    private Integer id;
     private String name;
     private String note;
     private Boolean closeFlag;
@@ -16,7 +16,7 @@ public class ProjectResponseDTO {
     }
 
     public ProjectResponseDTO(
-            Long id,
+            Integer id,
             String name,
             String note,
             Boolean closeFlag,
@@ -33,11 +33,11 @@ public class ProjectResponseDTO {
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

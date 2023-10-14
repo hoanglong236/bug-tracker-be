@@ -4,9 +4,9 @@ import java.time.LocalDateTime;
 
 public class ProjectMemberResponseDTO {
 
-    private Long id;
-    private Long projectId;
-    private Long userId;
+    private Integer id;
+    private Integer projectId;
+    private Integer userId;
     private Integer projectRoleId;
     private Boolean deleteFlag;
     private LocalDateTime createdAt;
@@ -16,9 +16,9 @@ public class ProjectMemberResponseDTO {
     }
 
     public ProjectMemberResponseDTO(
-            Long id,
-            Long projectId,
-            Long userId,
+            Integer id,
+            Integer projectId,
+            Integer userId,
             Integer projectRoleId,
             Boolean deleteFlag,
             LocalDateTime createdAt,
@@ -33,27 +33,27 @@ public class ProjectMemberResponseDTO {
         this.updatedAt = updatedAt;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Long getProjectId() {
+    public Integer getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Long projectId) {
+    public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

@@ -71,7 +71,7 @@ class ProjectRepositoryTest {
 
     @Test
     void givenNothing_whenFindById_thenReturnEmptyOptional() {
-        final Optional<Project> actualProjectOptional = this.projectRepository.findById(1L);
+        final Optional<Project> actualProjectOptional = this.projectRepository.findById(1);
         assertTrue(actualProjectOptional.isEmpty());
     }
 

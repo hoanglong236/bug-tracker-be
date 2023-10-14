@@ -5,28 +5,28 @@ import jakarta.validation.constraints.NotNull;
 public class ProjectMemberRequestDTO {
 
     @NotNull
-    private Long projectId;
+    private Integer projectId;
     @NotNull
-    private Long userId;
+    private Integer userId;
     @NotNull
     private Integer projectRoleId;
 
     public ProjectMemberRequestDTO() {
     }
 
-    public Long getProjectId() {
+    public Integer getProjectId() {
         return projectId;
     }
 
-    public void setProjectId(Long projectId) {
+    public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 
-    public Long getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 

@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/projects")
+@RequestMapping("/api/v1/projects")
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -33,7 +33,7 @@ public class ProjectController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProjectResponseDTO getProjectById(@PathVariable long id) {
+    public ProjectResponseDTO getProjectById(@PathVariable int id) {
         try {
             return this.projectService.getProjectById(id);
         } catch (ResourcesNotFoundException e) {
@@ -57,7 +57,7 @@ public class ProjectController {
     @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProjectResponseDTO updateProject(
-            @PathVariable long id, @RequestBody @Valid ProjectRequestDTO projectRequestDTO
+            @PathVariable int id, @RequestBody @Valid ProjectRequestDTO projectRequestDTO
     ) {
         try {
             return this.projectService.updateProject(id, projectRequestDTO);
@@ -72,7 +72,7 @@ public class ProjectController {
 
     @DeleteMapping("delete/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteProject(@PathVariable long id) {
+    public void deleteProject(@PathVariable int id) {
         try {
             this.projectService.deleteProjectById(id);
         } catch (ResourcesNotFoundException e) {

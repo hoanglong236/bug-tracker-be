@@ -35,7 +35,7 @@ public class ProjectService {
                 .toList();
     }
 
-    public ProjectResponseDTO getProjectById(long projectId) {
+    public ProjectResponseDTO getProjectById(int projectId) {
         final Optional<Project> projectOptional = this.projectRepository.findById(projectId);
         if (projectOptional.isEmpty()) {
             throw new ResourcesNotFoundException(ProjectMessage.NOT_FOUND);
@@ -54,7 +54,7 @@ public class ProjectService {
         return this.projectMapper.toResponse(savedProject);
     }
 
-    public ProjectResponseDTO updateProject(long id, ProjectRequestDTO projectRequestDTO) {
+    public ProjectResponseDTO updateProject(int id, ProjectRequestDTO projectRequestDTO) {
         final Optional<Project> projectOptional = this.projectRepository.findById(id);
         if (projectOptional.isEmpty()) {
             throw new ResourcesNotFoundException(ProjectMessage.NOT_FOUND);
@@ -73,7 +73,7 @@ public class ProjectService {
         return this.projectMapper.toResponse(updatedProject);
     }
 
-    public void deleteProjectById(long id) {
+    public void deleteProjectById(int id) {
         final Optional<Project> projectOptional = this.projectRepository.findById(id);
         if (projectOptional.isEmpty()) {
             throw new ResourcesNotFoundException(ProjectMessage.NOT_FOUND);

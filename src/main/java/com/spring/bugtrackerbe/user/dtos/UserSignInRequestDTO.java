@@ -1,10 +1,15 @@
-package com.spring.bugtrackerbe.user;
+package com.spring.bugtrackerbe.user.dtos;
 
-public class UserSignUpRequestDTO {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
+public class UserSignInRequestDTO {
+
+    @NotBlank
+    @Email
     private String email;
+    @NotBlank
     private String password;
-    private String name;
 
     public String getEmail() {
         return email;
@@ -20,13 +25,5 @@ public class UserSignUpRequestDTO {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

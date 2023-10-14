@@ -1,5 +1,9 @@
-package com.spring.bugtrackerbe.user;
+package com.spring.bugtrackerbe.user.controllers;
 
+import com.spring.bugtrackerbe.user.dtos.UserSignInRequestDTO;
+import com.spring.bugtrackerbe.user.dtos.UserSignInResponseDTO;
+import com.spring.bugtrackerbe.user.dtos.UserSignUpRequestDTO;
+import com.spring.bugtrackerbe.user.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,11 +18,6 @@ public class GuestUserController {
     @Autowired
     public GuestUserController(UserService userService) {
         this.userService = userService;
-    }
-
-    @PostMapping("/ping")
-    public String ping() {
-        return "Ping";
     }
 
     @PostMapping("/user-sign-up")

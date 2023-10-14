@@ -1,6 +1,13 @@
-package com.spring.bugtrackerbe.user;
+package com.spring.bugtrackerbe.user.services;
 
 import com.spring.bugtrackerbe.security.JwtService;
+import com.spring.bugtrackerbe.user.dtos.UserResponseDTO;
+import com.spring.bugtrackerbe.user.dtos.UserSignInRequestDTO;
+import com.spring.bugtrackerbe.user.dtos.UserSignInResponseDTO;
+import com.spring.bugtrackerbe.user.dtos.UserSignUpRequestDTO;
+import com.spring.bugtrackerbe.user.entities.User;
+import com.spring.bugtrackerbe.user.entities.UserRole;
+import com.spring.bugtrackerbe.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -8,6 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -55,5 +64,24 @@ public class UserService {
         final UserDetails authUser = (UserDetails) authentication.getPrincipal();
         final String authorizeToken = this.jwtService.generateToken(authUser);
         return new UserSignInResponseDTO(authorizeToken);
+    }
+
+    public List<UserResponseDTO> getUsersWithRoleUser() {
+        return this.userRepository.findAllUsersWithRoleUser()
+                .stream()
+                .map(this::userToUserResponseDTO)
+                .toList();
+    }
+
+    private UserResponseDTO userToUserResponseDTO(User user) {
+        return new UserResponseDTO(
+                user.getId(),
+                user.getEmail(),
+                user.getName(),
+                user.getRole(),
+                user.getEnableFlag(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
     }
 }

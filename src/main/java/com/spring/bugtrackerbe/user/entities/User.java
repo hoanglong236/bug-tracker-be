@@ -1,4 +1,4 @@
-package com.spring.bugtrackerbe.user;
+package com.spring.bugtrackerbe.user.entities;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;

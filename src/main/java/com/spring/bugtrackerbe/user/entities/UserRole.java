@@ -1,4 +1,4 @@
-package com.spring.bugtrackerbe.user;
+package com.spring.bugtrackerbe.user.entities;
 
 public enum UserRole {
 

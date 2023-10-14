@@ -1,5 +1,6 @@
-package com.spring.bugtrackerbe.user;
+package com.spring.bugtrackerbe.user.services;
 
+import com.spring.bugtrackerbe.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -19,7 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -45,13 +50,15 @@ public class WebSecurityConfig {
     ) throws Exception {
         final MvcRequestMatcher.Builder mvcMatcherBuilder =
                 new MvcRequestMatcher.Builder(introspector);
-        http.csrf(csrfConfigurer ->
-                csrfConfigurer.ignoringRequestMatchers(
+        http.cors(corsConfigurer
+                -> corsConfigurer.configurationSource(this.corsConfigurationSource()));
+        http.csrf(csrfConfigurer
+                -> csrfConfigurer.ignoringRequestMatchers(
                         mvcMatcherBuilder.pattern(PUBLIC_API_PATTERN), PathRequest.toH2Console()));
-        http.headers(headersConfigurer ->
-                headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
-        http.authorizeHttpRequests(authorize ->
-                authorize
+        http.headers(headersConfigurer
+                -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+        http.authorizeHttpRequests(authorize
+                -> authorize
                         .requestMatchers(mvcMatcherBuilder.pattern(PUBLIC_API_PATTERN)).permitAll()
                         .requestMatchers(PathRequest.toH2Console()).authenticated()
                         .anyRequest().authenticated()
@@ -78,6 +85,17 @@ public class WebSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    private CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
     @Bean

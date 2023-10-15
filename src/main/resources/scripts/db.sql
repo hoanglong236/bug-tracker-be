@@ -48,19 +48,12 @@ create table project_members(
     foreign key (project_role_id) references project_roles(id)
 );
 
-create table post_phases(
-    id int,
-    name varchar(50) not null,
-    created_at timestamp not null default current_timestamp,
-    updated_at timestamp not null default current_timestamp,
-    primary key (id)
-);
-
 create table posts(
     id int,
     reporter_id int not null,
     assigner_id int not null,
-    post_phase_id int not null,
+    project_id int not null,
+    phase varchar(10),
     status varchar(10) not null,
     title varchar(100) not null,
     bug_desc varchar(256) not null,
@@ -72,14 +65,13 @@ create table posts(
     primary key (id),
     foreign key (reporter_id) references project_members(id),
     foreign key (assigner_id) references project_members(id),
-    foreign key (post_phase_id) references post_phases(id)
+    foreign key (project_id) references projects(id)
 );
 
 create table post_files(
     id int,
     post_id int not null,
     url varchar(256) not null,
-    delete_flag boolean not null default false,
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
     primary key (id),
@@ -90,3 +82,5 @@ create sequence projects_seq increment 1 start 1;
 create sequence project_roles_seq increment 1 start 1;
 create sequence project_members_seq increment 1 start 1;
 create sequence users_seq increment 1 start 1;
+create sequence posts_seq increment 1 start 1;
+create sequence post_files_seq increment 1 start 1;

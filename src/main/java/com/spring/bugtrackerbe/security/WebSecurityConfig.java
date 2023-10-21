@@ -50,41 +50,27 @@ public class WebSecurityConfig {
     ) throws Exception {
         final MvcRequestMatcher.Builder mvcMatcherBuilder =
                 new MvcRequestMatcher.Builder(introspector);
-        http.cors(corsConfigurer
-                -> corsConfigurer.configurationSource(this.corsConfigurationSource()));
-        http.csrf(csrfConfigurer
-                -> csrfConfigurer.ignoringRequestMatchers(
+        http.cors(corsConfigurer ->
+                corsConfigurer.configurationSource(this.corsConfigurationSource()));
+        http.csrf(csrfConfigurer ->
+                csrfConfigurer.ignoringRequestMatchers(
                         mvcMatcherBuilder.pattern(PUBLIC_API_PATTERN), PathRequest.toH2Console()));
-        http.headers(headersConfigurer
-                -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
-        http.authorizeHttpRequests(authorize
-                -> authorize
+        http.headers(headersConfigurer ->
+                headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+        http.authorizeHttpRequests(authorize ->
+                authorize
                         .requestMatchers(mvcMatcherBuilder.pattern(PUBLIC_API_PATTERN)).permitAll()
                         .requestMatchers(PathRequest.toH2Console()).authenticated()
                         .anyRequest().authenticated()
         );
-        http.sessionManagement(sessionConfig
-                -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.sessionManagement(sessionConfig ->
+                sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.authenticationProvider(this.authenticationProvider())
                 .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.formLogin(Customizer.withDefaults());
         http.httpBasic(Customizer.withDefaults());
 
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationProvider authenticationProvider() {
-        final DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(this.userDetailsService);
-        provider.setPasswordEncoder(this.passwordEncoder());
-
-        return provider;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     private CorsConfigurationSource corsConfigurationSource() {
@@ -96,6 +82,19 @@ public class WebSecurityConfig {
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+    }
+
+    private AuthenticationProvider authenticationProvider() {
+        final DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(this.userDetailsService);
+        provider.setPasswordEncoder(this.passwordEncoder());
+
+        return provider;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

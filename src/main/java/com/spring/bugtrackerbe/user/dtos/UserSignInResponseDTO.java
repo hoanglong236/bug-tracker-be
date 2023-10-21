@@ -2,17 +2,17 @@ package com.spring.bugtrackerbe.user.dtos;
 
 public class UserSignInResponseDTO {
 
-    private String authorizeToken;
+    private String authorizationToken;
 
-    public UserSignInResponseDTO(String authorizeToken) {
-        this.authorizeToken = authorizeToken;
+    public UserSignInResponseDTO(String authorizationToken) {
+        this.authorizationToken = authorizationToken;
     }
 
-    public String getAuthorizeToken() {
-        return authorizeToken;
+    public String getAuthorizationToken() {
+        return authorizationToken;
     }
 
-    public void setAuthorizeToken(String authorizeToken) {
-        this.authorizeToken = authorizeToken;
+    public void setAuthorizationToken(String authorizationToken) {
+        this.authorizationToken = authorizationToken;
     }
 }

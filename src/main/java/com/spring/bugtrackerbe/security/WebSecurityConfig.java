@@ -1,7 +1,6 @@
 package com.spring.bugtrackerbe.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,8 +9,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,7 +25,6 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import java.util.List;
 
 @Configuration
-@EnableWebSecurity
 public class WebSecurityConfig {
 
     private static final String PUBLIC_API_PATTERN = "/api/v1/guest/**";
@@ -48,34 +45,29 @@ public class WebSecurityConfig {
             HttpSecurity http,
             HandlerMappingIntrospector introspector
     ) throws Exception {
-        final MvcRequestMatcher.Builder mvcMatcherBuilder =
-                new MvcRequestMatcher.Builder(introspector);
+        http.csrf(AbstractHttpConfigurer::disable);
         http.cors(corsConfigurer ->
                 corsConfigurer.configurationSource(this.corsConfigurationSource()));
-        http.csrf(csrfConfigurer ->
-                csrfConfigurer.ignoringRequestMatchers(
-                        mvcMatcherBuilder.pattern(PUBLIC_API_PATTERN), PathRequest.toH2Console()));
-        http.headers(headersConfigurer ->
-                headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+
+        final MvcRequestMatcher.Builder mvcMatcherBuilder =
+                new MvcRequestMatcher.Builder(introspector);
         http.authorizeHttpRequests(authorize ->
                 authorize
                         .requestMatchers(mvcMatcherBuilder.pattern(PUBLIC_API_PATTERN)).permitAll()
-                        .requestMatchers(PathRequest.toH2Console()).authenticated()
                         .anyRequest().authenticated()
         );
+
         http.sessionManagement(sessionConfig ->
                 sessionConfig.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        http.authenticationProvider(this.authenticationProvider())
-                .addFilterBefore(this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.formLogin(Customizer.withDefaults());
+        http.addFilterBefore(
+                this.jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.httpBasic(Customizer.withDefaults());
-
         return http.build();
     }
 
     private CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedOrigins(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
 
@@ -84,7 +76,8 @@ public class WebSecurityConfig {
         return source;
     }
 
-    private AuthenticationProvider authenticationProvider() {
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
         final DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(this.userDetailsService);
         provider.setPasswordEncoder(this.passwordEncoder());

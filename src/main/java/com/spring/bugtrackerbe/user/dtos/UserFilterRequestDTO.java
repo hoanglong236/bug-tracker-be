@@ -9,8 +9,8 @@ public class UserFilterRequestDTO {
     @Min(0)
     private Integer pageNumber = 0;
     @NotNull
-    @Min(10)
-    private Integer pageSize = 10;
+    @Min(1)
+    private Integer pageSize = 12;
 
     public Integer getPageNumber() {
         return pageNumber;

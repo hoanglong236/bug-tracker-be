@@ -1,6 +1,7 @@
 package com.spring.bugtrackerbe.user.services;
 
 import com.spring.bugtrackerbe.exceptions.ResourcesAlreadyExistsException;
+import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
 import com.spring.bugtrackerbe.security.JwtService;
 import com.spring.bugtrackerbe.user.dtos.*;
 import com.spring.bugtrackerbe.user.entities.User;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +20,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -71,15 +74,56 @@ public class UserService {
         return new UserSignInResponseDTO(authorizeToken);
     }
 
-    public List<UserResponseDTO> filterUsers(UserFilterRequestDTO filterRequestDTO) {
+    public Page<UserResponseDTO> filterUsers(UserFilterRequestDTO filterRequestDTO) {
         final Pageable pageable = PageRequest.of(
-                filterRequestDTO.getPageNumber(), filterRequestDTO.getPageSize());
+                filterRequestDTO.getPageNumber(),
+                filterRequestDTO.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "id")
+        );
         final Page<User> userPage = this.userRepository.findUsersWithRoleUser(pageable);
 
-        return userPage.getContent()
-                .stream()
-                .map(this::userToUserResponseDTO)
-                .toList();
+        return userPage.map(this::userToUserResponseDTO);
+    }
+
+    public UserResponseDTO disableUserById(int id) {
+        final Optional<User> userOptional = this.userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new ResourcesNotFoundException(UserMessage.NOT_FOUND);
+        }
+
+        final User user = userOptional.get();
+        user.setEnableFlag(false);
+        user.setUpdatedAt(LocalDateTime.now());
+
+        final User updatedUser = this.userRepository.save(user);
+        return userToUserResponseDTO(updatedUser);
+    }
+
+    public UserResponseDTO enableUserById(int id) {
+        final Optional<User> userOptional = this.userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new ResourcesNotFoundException(UserMessage.NOT_FOUND);
+        }
+
+        final User user = userOptional.get();
+        user.setEnableFlag(true);
+        user.setUpdatedAt(LocalDateTime.now());
+
+        final User updatedUser = this.userRepository.save(user);
+        return userToUserResponseDTO(updatedUser);
+    }
+
+    public void deleteUserById(int id) {
+        final Optional<User> userOptional = this.userRepository.findById(id);
+        if (userOptional.isEmpty()) {
+            throw new ResourcesNotFoundException(UserMessage.NOT_FOUND);
+        }
+
+        final User user = userOptional.get();
+        user.setDeleteFlag(true);
+        user.setUpdatedAt(LocalDateTime.now());
+
+        this.userRepository.save(user);
     }
 
     private UserResponseDTO userToUserResponseDTO(User user) {

@@ -1,7 +1,7 @@
 package com.spring.bugtrackerbe.project.mappers;
 
-import com.spring.bugtrackerbe.project.dtos.ProjectRequestDTO;
-import com.spring.bugtrackerbe.project.dtos.ProjectResponseDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectRequestDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectResponseDTO;
 import com.spring.bugtrackerbe.project.entities.Project;
 import org.springframework.stereotype.Component;
 

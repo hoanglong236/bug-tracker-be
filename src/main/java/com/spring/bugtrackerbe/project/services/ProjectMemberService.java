@@ -1,8 +1,8 @@
 package com.spring.bugtrackerbe.project.services;
 
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
-import com.spring.bugtrackerbe.project.dtos.ProjectMemberRequestDTO;
-import com.spring.bugtrackerbe.project.dtos.ProjectMemberResponseDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectMemberRequestDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectMemberResponseDTO;
 import com.spring.bugtrackerbe.project.entities.ProjectMember;
 import com.spring.bugtrackerbe.project.mappers.ProjectMemberMapper;
 import com.spring.bugtrackerbe.project.messages.ProjectMemberMessage;

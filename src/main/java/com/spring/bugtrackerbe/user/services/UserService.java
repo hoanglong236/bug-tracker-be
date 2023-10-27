@@ -3,7 +3,7 @@ package com.spring.bugtrackerbe.user.services;
 import com.spring.bugtrackerbe.exceptions.ResourcesAlreadyExistsException;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
 import com.spring.bugtrackerbe.security.JwtService;
-import com.spring.bugtrackerbe.user.dtos.*;
+import com.spring.bugtrackerbe.user.dto.*;
 import com.spring.bugtrackerbe.user.entities.User;
 import com.spring.bugtrackerbe.user.entities.UserRole;
 import com.spring.bugtrackerbe.user.messages.UserMessage;

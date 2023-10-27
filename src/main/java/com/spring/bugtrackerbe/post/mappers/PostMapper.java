@@ -1,7 +1,7 @@
 package com.spring.bugtrackerbe.post.mappers;
 
-import com.spring.bugtrackerbe.post.dtos.PostRequestDTO;
-import com.spring.bugtrackerbe.post.dtos.PostResponseDTO;
+import com.spring.bugtrackerbe.post.dto.PostRequestDTO;
+import com.spring.bugtrackerbe.post.dto.PostResponseDTO;
 import com.spring.bugtrackerbe.post.entities.Post;
 import org.springframework.stereotype.Component;
 

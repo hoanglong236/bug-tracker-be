@@ -1,4 +1,4 @@
-package com.spring.bugtrackerbe.project.dtos;
+package com.spring.bugtrackerbe.project.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

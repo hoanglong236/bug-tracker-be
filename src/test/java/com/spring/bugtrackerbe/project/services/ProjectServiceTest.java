@@ -2,8 +2,8 @@ package com.spring.bugtrackerbe.project.services;
 
 import com.spring.bugtrackerbe.exceptions.ResourcesAlreadyExistsException;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
-import com.spring.bugtrackerbe.project.dtos.ProjectRequestDTO;
-import com.spring.bugtrackerbe.project.dtos.ProjectResponseDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectRequestDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectResponseDTO;
 import com.spring.bugtrackerbe.project.entities.Project;
 import com.spring.bugtrackerbe.project.mappers.ProjectMapper;
 import com.spring.bugtrackerbe.project.repositories.ProjectRepository;

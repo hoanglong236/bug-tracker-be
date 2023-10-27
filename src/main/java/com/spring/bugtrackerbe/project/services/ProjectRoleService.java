@@ -2,8 +2,8 @@ package com.spring.bugtrackerbe.project.services;
 
 import com.spring.bugtrackerbe.exceptions.ResourcesAlreadyExistsException;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
-import com.spring.bugtrackerbe.project.dtos.ProjectRoleRequestDTO;
-import com.spring.bugtrackerbe.project.dtos.ProjectRoleResponseDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectRoleRequestDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectRoleResponseDTO;
 import com.spring.bugtrackerbe.project.entities.ProjectRole;
 import com.spring.bugtrackerbe.project.mappers.ProjectRoleMapper;
 import com.spring.bugtrackerbe.project.messages.ProjectRoleMessage;

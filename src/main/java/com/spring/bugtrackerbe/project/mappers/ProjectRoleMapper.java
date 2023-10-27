@@ -1,7 +1,7 @@
 package com.spring.bugtrackerbe.project.mappers;
 
-import com.spring.bugtrackerbe.project.dtos.ProjectRoleRequestDTO;
-import com.spring.bugtrackerbe.project.dtos.ProjectRoleResponseDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectRoleRequestDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectRoleResponseDTO;
 import com.spring.bugtrackerbe.project.entities.ProjectRole;
 import org.springframework.stereotype.Component;
 

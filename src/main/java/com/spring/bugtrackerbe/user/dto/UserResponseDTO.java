@@ -1,31 +1,36 @@
-package com.spring.bugtrackerbe.project.dtos;
+package com.spring.bugtrackerbe.user.dto;
+
+import com.spring.bugtrackerbe.user.entities.UserRole;
 
 import java.time.LocalDateTime;
 
-public class ProjectRoleResponseDTO {
+public class UserResponseDTO {
 
     private Integer id;
+    private String email;
     private String name;
-    private String note;
-    private Boolean deleteFlag;
+    private UserRole role;
+    private Boolean enableFlag;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public ProjectRoleResponseDTO() {
+    public UserResponseDTO() {
     }
 
-    public ProjectRoleResponseDTO(
+    public UserResponseDTO(
             Integer id,
+            String email,
             String name,
-            String note,
-            Boolean deleteFlag,
+            UserRole role,
+            Boolean enableFlag,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
         this.id = id;
+        this.email = email;
         this.name = name;
-        this.note = note;
-        this.deleteFlag = deleteFlag;
+        this.role = role;
+        this.enableFlag = enableFlag;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -38,6 +43,14 @@ public class ProjectRoleResponseDTO {
         this.id = id;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public String getName() {
         return name;
     }
@@ -46,20 +59,20 @@ public class ProjectRoleResponseDTO {
         this.name = name;
     }
 
-    public String getNote() {
-        return note;
+    public UserRole getRole() {
+        return role;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setRole(UserRole role) {
+        this.role = role;
     }
 
-    public Boolean getDeleteFlag() {
-        return deleteFlag;
+    public Boolean getEnableFlag() {
+        return enableFlag;
     }
 
-    public void setDeleteFlag(Boolean deleteFlag) {
-        this.deleteFlag = deleteFlag;
+    public void setEnableFlag(Boolean enableFlag) {
+        this.enableFlag = enableFlag;
     }
 
     public LocalDateTime getCreatedAt() {

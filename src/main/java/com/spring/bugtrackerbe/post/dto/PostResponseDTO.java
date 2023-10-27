@@ -1,28 +1,66 @@
-package com.spring.bugtrackerbe.post.dtos;
+package com.spring.bugtrackerbe.post.dto;
 
 import com.spring.bugtrackerbe.post.entities.PostPhase;
 import com.spring.bugtrackerbe.post.entities.PostStatus;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
-public class PostRequestDTO {
+import java.time.LocalDateTime;
 
-    @NotNull
+public class PostResponseDTO {
+
+    private Integer id;
     private Integer reporterId;
-    @NotNull
     private Integer assignerId;
-    @NotNull
     private Integer projectId;
-    @NotNull
     private PostPhase phase;
-    @NotNull
     private PostStatus status;
-    @NotBlank
     private String title;
-    @NotBlank
     private String bugDesc;
     private String bugReason;
     private String bugFixMethod;
+    private Boolean deleteFlag;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+
+    public PostResponseDTO() {
+    }
+
+    public PostResponseDTO(
+            Integer id,
+            Integer reporterId,
+            Integer assignerId,
+            Integer projectId,
+            PostPhase phase,
+            PostStatus status,
+            String title,
+            String bugDesc,
+            String bugReason,
+            String bugFixMethod,
+            Boolean deleteFlag,
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
+    ) {
+        this.id = id;
+        this.reporterId = reporterId;
+        this.assignerId = assignerId;
+        this.projectId = projectId;
+        this.phase = phase;
+        this.status = status;
+        this.title = title;
+        this.bugDesc = bugDesc;
+        this.bugReason = bugReason;
+        this.bugFixMethod = bugFixMethod;
+        this.deleteFlag = deleteFlag;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getReporterId() {
         return reporterId;
@@ -94,5 +132,29 @@ public class PostRequestDTO {
 
     public void setBugFixMethod(String bugFixMethod) {
         this.bugFixMethod = bugFixMethod;
+    }
+
+    public Boolean getDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(Boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

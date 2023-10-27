@@ -1,6 +1,6 @@
 package com.spring.bugtrackerbe.post.controllers;
 
-import com.spring.bugtrackerbe.post.dtos.PostResponseDTO;
+import com.spring.bugtrackerbe.post.dto.PostResponseDTO;
 import com.spring.bugtrackerbe.post.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

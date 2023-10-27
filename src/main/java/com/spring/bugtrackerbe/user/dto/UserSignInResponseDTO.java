@@ -1,4 +1,4 @@
-package com.spring.bugtrackerbe.user.dtos;
+package com.spring.bugtrackerbe.user.dto;
 
 public class UserSignInResponseDTO {
 

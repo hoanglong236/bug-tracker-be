@@ -2,8 +2,8 @@ package com.spring.bugtrackerbe.project.controllers;
 
 import com.spring.bugtrackerbe.common.CommonMessage;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
-import com.spring.bugtrackerbe.project.dtos.ProjectMemberRequestDTO;
-import com.spring.bugtrackerbe.project.dtos.ProjectMemberResponseDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectMemberRequestDTO;
+import com.spring.bugtrackerbe.project.dto.ProjectMemberResponseDTO;
 import com.spring.bugtrackerbe.project.services.ProjectMemberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

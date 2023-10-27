@@ -2,9 +2,9 @@ package com.spring.bugtrackerbe.user.controllers;
 
 import com.spring.bugtrackerbe.common.CommonMessage;
 import com.spring.bugtrackerbe.exceptions.ResourcesAlreadyExistsException;
-import com.spring.bugtrackerbe.user.dtos.UserSignInRequestDTO;
-import com.spring.bugtrackerbe.user.dtos.UserSignInResponseDTO;
-import com.spring.bugtrackerbe.user.dtos.UserSignUpRequestDTO;
+import com.spring.bugtrackerbe.user.dto.UserSignInRequestDTO;
+import com.spring.bugtrackerbe.user.dto.UserSignInResponseDTO;
+import com.spring.bugtrackerbe.user.dto.UserSignUpRequestDTO;
 import com.spring.bugtrackerbe.user.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

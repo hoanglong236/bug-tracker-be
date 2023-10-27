@@ -1,4 +1,4 @@
-package com.spring.bugtrackerbe.user.dtos;
+package com.spring.bugtrackerbe.user.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

@@ -1,25 +1,23 @@
-package com.spring.bugtrackerbe.project.dtos;
+package com.spring.bugtrackerbe.project.dto;
 
 import java.time.LocalDateTime;
 
-public class ProjectResponseDTO {
+public class ProjectRoleResponseDTO {
 
     private Integer id;
     private String name;
     private String note;
-    private Boolean closeFlag;
     private Boolean deleteFlag;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public ProjectResponseDTO() {
+    public ProjectRoleResponseDTO() {
     }
 
-    public ProjectResponseDTO(
+    public ProjectRoleResponseDTO(
             Integer id,
             String name,
             String note,
-            Boolean closeFlag,
             Boolean deleteFlag,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
@@ -27,7 +25,6 @@ public class ProjectResponseDTO {
         this.id = id;
         this.name = name;
         this.note = note;
-        this.closeFlag = closeFlag;
         this.deleteFlag = deleteFlag;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -55,14 +52,6 @@ public class ProjectResponseDTO {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public Boolean getCloseFlag() {
-        return closeFlag;
-    }
-
-    public void setCloseFlag(Boolean closeFlag) {
-        this.closeFlag = closeFlag;
     }
 
     public Boolean getDeleteFlag() {

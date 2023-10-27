@@ -2,8 +2,8 @@ package com.spring.bugtrackerbe.user.controllers;
 
 import com.spring.bugtrackerbe.common.CommonMessage;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
-import com.spring.bugtrackerbe.user.dtos.UserFilterRequestDTO;
-import com.spring.bugtrackerbe.user.dtos.UserResponseDTO;
+import com.spring.bugtrackerbe.user.dto.UserFilterRequestDTO;
+import com.spring.bugtrackerbe.user.dto.UserResponseDTO;
 import com.spring.bugtrackerbe.user.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

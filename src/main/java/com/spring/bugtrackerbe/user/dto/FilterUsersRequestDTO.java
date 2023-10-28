@@ -3,7 +3,7 @@ package com.spring.bugtrackerbe.user.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-public class UserFilterRequestDTO {
+public class FilterUsersRequestDTO {
 
     @NotNull
     @Min(0)

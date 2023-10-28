@@ -74,15 +74,14 @@ public class UserService {
         return new UserSignInResponseDTO(authorizeToken);
     }
 
-    public Page<UserResponseDTO> filterUsers(UserFilterRequestDTO filterRequestDTO) {
+    public Page<UserResponseDTO> filterUsers(FilterUsersRequestDTO filterUsersRequestDTO) {
         final Pageable pageable = PageRequest.of(
-                filterRequestDTO.getPageNumber(),
-                filterRequestDTO.getPageSize(),
+                filterUsersRequestDTO.getPageNumber(),
+                filterUsersRequestDTO.getPageSize(),
                 Sort.by(Sort.Direction.DESC, "id")
         );
-        final Page<User> userPage = this.userRepository.findUsersWithRoleUser(pageable);
-
-        return userPage.map(this::userToUserResponseDTO);
+        return this.userRepository.findUsersWithRoleUser(pageable)
+                .map(this::userToUserResponseDTO);
     }
 
     public UserResponseDTO disableUserById(int id) {

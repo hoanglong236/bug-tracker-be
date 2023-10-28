@@ -2,7 +2,7 @@ package com.spring.bugtrackerbe.user.controllers;
 
 import com.spring.bugtrackerbe.common.CommonMessage;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
-import com.spring.bugtrackerbe.user.dto.UserFilterRequestDTO;
+import com.spring.bugtrackerbe.user.dto.FilterUsersRequestDTO;
 import com.spring.bugtrackerbe.user.dto.UserResponseDTO;
 import com.spring.bugtrackerbe.user.services.UserService;
 import jakarta.validation.Valid;
@@ -26,9 +26,9 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<UserResponseDTO> filterUsers(
-            @RequestBody @Valid UserFilterRequestDTO filterRequestDTO) {
-
-        return this.userService.filterUsers(filterRequestDTO);
+            @RequestBody @Valid FilterUsersRequestDTO filterUsersRequestDTO
+    ) {
+        return this.userService.filterUsers(filterUsersRequestDTO);
     }
 
     @PostMapping("/disable/{id}")

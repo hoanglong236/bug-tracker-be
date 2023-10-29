@@ -1,5 +1,6 @@
 package com.spring.bugtrackerbe.user.services;
 
+import com.spring.bugtrackerbe.user.messages.UserMessage;
 import com.spring.bugtrackerbe.user.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +21,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
+                .orElseThrow(() -> new UsernameNotFoundException(UserMessage.NOT_FOUND));
     }
 }

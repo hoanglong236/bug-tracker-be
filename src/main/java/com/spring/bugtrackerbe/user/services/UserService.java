@@ -21,7 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -85,12 +84,8 @@ public class UserService {
     }
 
     public UserResponseDTO disableUserById(int id) {
-        final Optional<User> userOptional = this.userRepository.findById(id);
-        if (userOptional.isEmpty()) {
-            throw new ResourcesNotFoundException(UserMessage.NOT_FOUND);
-        }
-
-        final User user = userOptional.get();
+        final User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResourcesNotFoundException(UserMessage.NOT_FOUND));
         user.setEnableFlag(false);
         user.setUpdatedAt(LocalDateTime.now());
 
@@ -99,12 +94,8 @@ public class UserService {
     }
 
     public UserResponseDTO enableUserById(int id) {
-        final Optional<User> userOptional = this.userRepository.findById(id);
-        if (userOptional.isEmpty()) {
-            throw new ResourcesNotFoundException(UserMessage.NOT_FOUND);
-        }
-
-        final User user = userOptional.get();
+        final User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResourcesNotFoundException(UserMessage.NOT_FOUND));
         user.setEnableFlag(true);
         user.setUpdatedAt(LocalDateTime.now());
 
@@ -113,12 +104,8 @@ public class UserService {
     }
 
     public void deleteUserById(int id) {
-        final Optional<User> userOptional = this.userRepository.findById(id);
-        if (userOptional.isEmpty()) {
-            throw new ResourcesNotFoundException(UserMessage.NOT_FOUND);
-        }
-
-        final User user = userOptional.get();
+        final User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResourcesNotFoundException(UserMessage.NOT_FOUND));
         user.setDeleteFlag(true);
         user.setUpdatedAt(LocalDateTime.now());
 

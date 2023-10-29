@@ -1,9 +1,11 @@
 package com.spring.bugtrackerbe.project.mappers;
 
-import com.spring.bugtrackerbe.project.dto.ProjectRequestDTO;
-import com.spring.bugtrackerbe.project.dto.ProjectResponseDTO;
+import com.spring.bugtrackerbe.project.dto.*;
 import com.spring.bugtrackerbe.project.entities.Project;
+import com.spring.bugtrackerbe.project.entities.ProjectMember;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class ProjectMapper {
@@ -37,6 +39,46 @@ public class ProjectMapper {
                 project.getDeleteFlag(),
                 project.getCreatedAt(),
                 project.getUpdatedAt()
+        );
+    }
+
+    public ProjectMember toProjectMember(ProjectMemberRequestDTO memberRequestDTO) {
+        final ProjectMember projectMember = new ProjectMember();
+
+        projectMember.setProjectId(memberRequestDTO.getProjectId());
+        projectMember.setUserId(memberRequestDTO.getUserId());
+        projectMember.setRole(memberRequestDTO.getRole());
+
+        return projectMember;
+    }
+
+    public ProjectMemberResponseDTO toProjectMemberResponse(ProjectMember projectMember) {
+        return new ProjectMemberResponseDTO(
+                projectMember.getId(),
+                projectMember.getProjectId(),
+                projectMember.getUserId(),
+                projectMember.getRole(),
+                projectMember.getDeleteFlag(),
+                projectMember.getCreatedAt(),
+                projectMember.getUpdatedAt()
+        );
+    }
+
+    public ProjectInfoResponseDTO toProjectInfoResponseDTO(Project project, List<ProjectMember> members) {
+        return new ProjectInfoResponseDTO(
+                project.getId(),
+                project.getName(),
+                project.getKind(),
+                project.getArchitecture(),
+                project.getTechnology(),
+                project.getLang(),
+                project.getDb(),
+                project.getNote(),
+                project.getCloseFlag(),
+                project.getDeleteFlag(),
+                project.getCreatedAt(),
+                project.getUpdatedAt(),
+                members.stream().map(this::toProjectMemberResponse).toList()
         );
     }
 }

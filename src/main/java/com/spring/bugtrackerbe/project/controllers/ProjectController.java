@@ -3,9 +3,8 @@ package com.spring.bugtrackerbe.project.controllers;
 import com.spring.bugtrackerbe.common.CommonMessage;
 import com.spring.bugtrackerbe.exceptions.ResourcesAlreadyExistsException;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
-import com.spring.bugtrackerbe.project.dto.FilterProjectsRequestDTO;
-import com.spring.bugtrackerbe.project.dto.ProjectRequestDTO;
-import com.spring.bugtrackerbe.project.dto.ProjectResponseDTO;
+import com.spring.bugtrackerbe.project.dto.*;
+import com.spring.bugtrackerbe.project.enums.ProjectRole;
 import com.spring.bugtrackerbe.project.services.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +30,6 @@ public class ProjectController {
             @RequestBody @Valid FilterProjectsRequestDTO filterProjectsRequestDTO
     ) {
         return this.projectService.filterProjects(filterProjectsRequestDTO);
-    }
-
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public ProjectResponseDTO getProjectById(@PathVariable int id) {
-        try {
-            return this.projectService.getProjectById(id);
-        } catch (ResourcesNotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
     }
 
     @PostMapping("/create")
@@ -80,6 +69,50 @@ public class ProjectController {
         } catch (ResourcesNotFoundException e) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, CommonMessage.DELETE_FAILED + e.getMessage());
+        }
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectInfoResponseDTO getProjectInfo(@PathVariable int id) {
+        try {
+            return this.projectService.getProjectInfo(id);
+        } catch (ResourcesNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PutMapping("/change-member-role/{memberId}/{role}")
+    @ResponseStatus(HttpStatus.OK)
+    public ProjectMemberResponseDTO changeMemberRole(
+            @PathVariable Integer memberId, @PathVariable ProjectRole role
+    ) {
+        try {
+            return this.projectService.changeMemberRole(memberId, role);
+        } catch (ResourcesNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @PutMapping("/add-member")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProjectMemberResponseDTO addMember(
+            @RequestBody @Valid ProjectMemberRequestDTO memberRequestDTO
+    ) {
+        try {
+            return this.projectService.addMember(memberRequestDTO);
+        } catch (ResourcesNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/remove-member/{memberId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void removeMember(@PathVariable Integer memberId) {
+        try {
+            this.projectService.removeMember(memberId);
+        } catch (ResourcesNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 }

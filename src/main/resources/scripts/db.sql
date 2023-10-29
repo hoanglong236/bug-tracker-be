@@ -1,7 +1,7 @@
 create database bug_tracker encoding 'utf8';
 
 create table users(
-	id int,
+    id int,
     email varchar(100) not null unique,
     password varchar(60) not null unique,
     name varchar(50) not null,
@@ -14,17 +14,17 @@ create table users(
 );
 
 create table projects(
-	id int,
-	name varchar(100) not null,
-	kind varchar(50) not null,
+    id int,
+    name varchar(100) not null,
+    kind varchar(50) not null,
     architecture varchar(50) not null,
     technology varchar(50) not null,
     lang varchar(100) not null,
     db varchar(50) not null,
-	note varchar(256),
-	close_flag boolean not null default false,
-	delete_flag boolean not null default false,
-	created_at timestamp not null default current_timestamp,
+    note varchar(256),
+    close_flag boolean not null default false,
+    delete_flag boolean not null default false,
+    created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
     primary key (id)
 );

@@ -1,7 +1,7 @@
 package com.spring.bugtrackerbe.post.dto;
 
-import com.spring.bugtrackerbe.post.entities.PostPhase;
-import com.spring.bugtrackerbe.post.entities.PostStatus;
+import com.spring.bugtrackerbe.post.enums.PostPhase;
+import com.spring.bugtrackerbe.post.enums.PostStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

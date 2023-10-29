@@ -1,5 +1,7 @@
 package com.spring.bugtrackerbe.post.entities;
 
+import com.spring.bugtrackerbe.post.enums.PostPhase;
+import com.spring.bugtrackerbe.post.enums.PostStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

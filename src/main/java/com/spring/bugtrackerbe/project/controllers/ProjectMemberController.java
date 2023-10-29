@@ -4,6 +4,7 @@ import com.spring.bugtrackerbe.common.CommonMessage;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
 import com.spring.bugtrackerbe.project.dto.ProjectMemberRequestDTO;
 import com.spring.bugtrackerbe.project.dto.ProjectMemberResponseDTO;
+import com.spring.bugtrackerbe.project.enums.ProjectRole;
 import com.spring.bugtrackerbe.project.services.ProjectMemberService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +34,8 @@ public class ProjectMemberController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectMemberResponseDTO createMember(
-            @RequestBody @Valid ProjectMemberRequestDTO memberRequestDTO) {
-
+            @RequestBody @Valid ProjectMemberRequestDTO memberRequestDTO
+    ) {
         try {
             return this.projectMemberService.createMember(memberRequestDTO);
         } catch (Exception e) {
@@ -45,10 +46,10 @@ public class ProjectMemberController {
     @PutMapping("/change-role/{memberId}/{roleId}")
     @ResponseStatus(HttpStatus.OK)
     public ProjectMemberResponseDTO changeMemberRole(
-            @PathVariable Integer memberId, @PathVariable Integer roleId) {
-
+            @PathVariable Integer memberId, @PathVariable ProjectRole role
+    ) {
         try {
-            return this.projectMemberService.changeMemberRole(memberId, roleId);
+            return this.projectMemberService.changeMemberRole(memberId, role);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -1,5 +1,6 @@
 package com.spring.bugtrackerbe.project.dto;
 
+import com.spring.bugtrackerbe.project.enums.ProjectRole;
 import jakarta.validation.constraints.NotNull;
 
 public class ProjectMemberRequestDTO {
@@ -9,10 +10,7 @@ public class ProjectMemberRequestDTO {
     @NotNull
     private Integer userId;
     @NotNull
-    private Integer projectRoleId;
-
-    public ProjectMemberRequestDTO() {
-    }
+    private ProjectRole role;
 
     public Integer getProjectId() {
         return projectId;
@@ -30,11 +28,11 @@ public class ProjectMemberRequestDTO {
         this.userId = userId;
     }
 
-    public Integer getProjectRoleId() {
-        return projectRoleId;
+    public ProjectRole getRole() {
+        return role;
     }
 
-    public void setProjectRoleId(Integer projectRoleId) {
-        this.projectRoleId = projectRoleId;
+    public void setRole(ProjectRole role) {
+        this.role = role;
     }
 }

@@ -13,7 +13,7 @@ public class ProjectMemberMapper {
 
         projectMember.setProjectId(memberRequestDTO.getProjectId());
         projectMember.setUserId(memberRequestDTO.getUserId());
-        projectMember.setProjectRoleId(memberRequestDTO.getProjectRoleId());
+        projectMember.setRole(memberRequestDTO.getRole());
 
         return projectMember;
     }
@@ -23,7 +23,7 @@ public class ProjectMemberMapper {
                 projectMember.getId(),
                 projectMember.getProjectId(),
                 projectMember.getUserId(),
-                projectMember.getProjectRoleId(),
+                projectMember.getRole(),
                 projectMember.getDeleteFlag(),
                 projectMember.getCreatedAt(),
                 projectMember.getUpdatedAt()

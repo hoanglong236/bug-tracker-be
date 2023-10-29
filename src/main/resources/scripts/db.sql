@@ -29,21 +29,11 @@ create table projects(
     primary key (id)
 );
 
-create table project_roles(
-    id int,
-    name varchar(50) not null,
-    note varchar(256),
-    delete_flag boolean not null default false,
-    created_at timestamp not null default current_timestamp,
-    updated_at timestamp not null default current_timestamp,
-    primary key (id)
-);
-
 create table project_members(
     id int,
     project_id int not null,
     user_id int not null,
-    project_role_id int not null,
+    role varchar(10) not null,
     delete_flag boolean not null default false,
     created_at timestamp not null default current_timestamp,
     updated_at timestamp not null default current_timestamp,
@@ -58,7 +48,7 @@ create table posts(
     reporter_id int not null,
     assigner_id int not null,
     project_id int not null,
-    phase varchar(10),
+    phase varchar(10) not null,
     status varchar(10) not null,
     title varchar(100) not null,
     bug_desc varchar(256) not null,
@@ -84,7 +74,6 @@ create table post_files(
 );
 
 create sequence projects_seq increment 1 start 1;
-create sequence project_roles_seq increment 1 start 1;
 create sequence project_members_seq increment 1 start 1;
 create sequence users_seq increment 1 start 1;
 create sequence posts_seq increment 1 start 1;

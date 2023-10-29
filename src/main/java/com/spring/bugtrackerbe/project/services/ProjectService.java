@@ -17,13 +17,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-
     private final ProjectMapper projectMapper;
 
     @Autowired
@@ -45,11 +43,9 @@ public class ProjectService {
     }
 
     public ProjectResponseDTO getProjectById(int projectId) {
-        final Optional<Project> projectOptional = this.projectRepository.findById(projectId);
-        if (projectOptional.isEmpty()) {
-            throw new ResourcesNotFoundException(ProjectMessage.NOT_FOUND);
-        }
-        return this.projectMapper.toResponse(projectOptional.get());
+        final Project project = this.projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResourcesNotFoundException(ProjectMessage.NOT_FOUND));
+        return this.projectMapper.toResponse(project);
     }
 
     public ProjectResponseDTO createProject(ProjectRequestDTO projectRequestDTO) {
@@ -64,15 +60,12 @@ public class ProjectService {
     }
 
     public ProjectResponseDTO updateProject(int id, ProjectRequestDTO projectRequestDTO) {
-        final Optional<Project> projectOptional = this.projectRepository.findById(id);
-        if (projectOptional.isEmpty()) {
-            throw new ResourcesNotFoundException(ProjectMessage.NOT_FOUND);
-        }
         if (this.projectRepository.existsProjectName(projectRequestDTO.getName())) {
             throw new ResourcesAlreadyExistsException(ProjectMessage.NAME_ALREADY_EXISTS);
         }
 
-        final Project project = projectOptional.get();
+        final Project project = this.projectRepository.findById(id)
+                .orElseThrow(() -> new ResourcesNotFoundException(ProjectMessage.NOT_FOUND));
         project.setName(projectRequestDTO.getName());
         project.setNote(projectRequestDTO.getNote());
         project.setCloseFlag(projectRequestDTO.getCloseFlag());
@@ -83,12 +76,8 @@ public class ProjectService {
     }
 
     public void deleteProjectById(int id) {
-        final Optional<Project> projectOptional = this.projectRepository.findById(id);
-        if (projectOptional.isEmpty()) {
-            throw new ResourcesNotFoundException(ProjectMessage.NOT_FOUND);
-        }
-
-        final Project project = projectOptional.get();
+        final Project project = this.projectRepository.findById(id)
+                .orElseThrow(() -> new ResourcesNotFoundException(ProjectMessage.NOT_FOUND));
         project.setDeleteFlag(true);
         project.setUpdatedAt(LocalDateTime.now());
 

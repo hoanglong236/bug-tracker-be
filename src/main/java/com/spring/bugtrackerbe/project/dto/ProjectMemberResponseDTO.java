@@ -1,5 +1,7 @@
 package com.spring.bugtrackerbe.project.dto;
 
+import com.spring.bugtrackerbe.project.enums.ProjectRole;
+
 import java.time.LocalDateTime;
 
 public class ProjectMemberResponseDTO {
@@ -7,7 +9,7 @@ public class ProjectMemberResponseDTO {
     private Integer id;
     private Integer projectId;
     private Integer userId;
-    private Integer projectRoleId;
+    private ProjectRole role;
     private Boolean deleteFlag;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -19,7 +21,7 @@ public class ProjectMemberResponseDTO {
             Integer id,
             Integer projectId,
             Integer userId,
-            Integer projectRoleId,
+            ProjectRole role,
             Boolean deleteFlag,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
@@ -27,7 +29,7 @@ public class ProjectMemberResponseDTO {
         this.id = id;
         this.projectId = projectId;
         this.userId = userId;
-        this.projectRoleId = projectRoleId;
+        this.role = role;
         this.deleteFlag = deleteFlag;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -57,12 +59,12 @@ public class ProjectMemberResponseDTO {
         this.userId = userId;
     }
 
-    public Integer getProjectRoleId() {
-        return projectRoleId;
+    public ProjectRole getRole() {
+        return role;
     }
 
-    public void setProjectRoleId(Integer projectRoleId) {
-        this.projectRoleId = projectRoleId;
+    public void setRole(ProjectRole role) {
+        this.role = role;
     }
 
     public Boolean getDeleteFlag() {

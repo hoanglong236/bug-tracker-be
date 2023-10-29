@@ -1,6 +1,6 @@
 package com.spring.bugtrackerbe.project.entities;
 
-
+import com.spring.bugtrackerbe.project.enums.ProjectRole;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -19,7 +19,8 @@ public class ProjectMember {
     private Integer id;
     private Integer projectId;
     private Integer userId;
-    private Integer projectRoleId;
+    @Enumerated(EnumType.STRING)
+    private ProjectRole role;
     private Boolean deleteFlag = Boolean.FALSE;
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
@@ -48,12 +49,12 @@ public class ProjectMember {
         this.userId = userId;
     }
 
-    public Integer getProjectRoleId() {
-        return projectRoleId;
+    public ProjectRole getRole() {
+        return role;
     }
 
-    public void setProjectRoleId(Integer projectRoleId) {
-        this.projectRoleId = projectRoleId;
+    public void setRole(ProjectRole role) {
+        this.role = role;
     }
 
     public Boolean getDeleteFlag() {

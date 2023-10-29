@@ -3,16 +3,16 @@ package com.spring.bugtrackerbe.project.controllers;
 import com.spring.bugtrackerbe.common.CommonMessage;
 import com.spring.bugtrackerbe.exceptions.ResourcesAlreadyExistsException;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
+import com.spring.bugtrackerbe.project.dto.FilterProjectsRequestDTO;
 import com.spring.bugtrackerbe.project.dto.ProjectRequestDTO;
 import com.spring.bugtrackerbe.project.dto.ProjectResponseDTO;
 import com.spring.bugtrackerbe.project.services.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/projects")
@@ -25,10 +25,12 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @GetMapping
+    @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ProjectResponseDTO> getAll() {
-        return this.projectService.getProjects();
+    public Page<ProjectResponseDTO> filterProjects(
+            @RequestBody @Valid FilterProjectsRequestDTO filterProjectsRequestDTO
+    ) {
+        return this.projectService.filterProjects(filterProjectsRequestDTO);
     }
 
     @GetMapping("/{id}")
@@ -44,8 +46,8 @@ public class ProjectController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public ProjectResponseDTO createProject(
-            @RequestBody @Valid ProjectRequestDTO projectRequestDTO) {
-
+            @RequestBody @Valid ProjectRequestDTO projectRequestDTO
+    ) {
         try {
             return this.projectService.createProject(projectRequestDTO);
         } catch (ResourcesAlreadyExistsException e) {

@@ -12,6 +12,11 @@ public class ProjectMapper {
         final Project project = new Project();
 
         project.setName(projectRequestDTO.getName());
+        project.setKind(projectRequestDTO.getKind());
+        project.setArchitecture(projectRequestDTO.getArchitecture());
+        project.setTechnology(projectRequestDTO.getTechnology());
+        project.setLang(projectRequestDTO.getLang());
+        project.setDb(projectRequestDTO.getDb());
         project.setNote(projectRequestDTO.getNote());
         project.setCloseFlag(projectRequestDTO.getCloseFlag());
 
@@ -22,6 +27,11 @@ public class ProjectMapper {
         return new ProjectResponseDTO(
                 project.getId(),
                 project.getName(),
+                project.getKind(),
+                project.getArchitecture(),
+                project.getTechnology(),
+                project.getLang(),
+                project.getDb(),
                 project.getNote(),
                 project.getCloseFlag(),
                 project.getDeleteFlag(),

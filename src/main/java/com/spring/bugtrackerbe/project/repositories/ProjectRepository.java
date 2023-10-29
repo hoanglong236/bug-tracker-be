@@ -1,23 +1,22 @@
 package com.spring.bugtrackerbe.project.repositories;
 
 import com.spring.bugtrackerbe.project.entities.Project;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
-    @Override
     @Transactional(readOnly = true)
     @Query("SELECT p FROM Project p WHERE p.deleteFlag = FALSE")
-    @NonNull
-    List<Project> findAll();
+    Page<Project> filterProjects(Pageable pageable);
 
     @Override
     @Transactional(readOnly = true)

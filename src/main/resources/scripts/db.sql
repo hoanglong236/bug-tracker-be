@@ -16,6 +16,11 @@ create table users(
 create table projects(
 	id int,
 	name varchar(100) not null,
+	kind varchar(50) not null,
+    architecture varchar(50) not null,
+    technology varchar(50) not null,
+    lang varchar(100) not null,
+    db varchar(50) not null,
 	note varchar(256),
 	close_flag boolean not null default false,
 	delete_flag boolean not null default false,

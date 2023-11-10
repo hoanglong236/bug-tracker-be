@@ -16,11 +16,11 @@ create table users(
 create table projects(
     id int,
     name varchar(100) not null,
-    kind varchar(50) not null,
-    architecture varchar(50) not null,
-    technology varchar(50) not null,
-    lang varchar(100) not null,
-    db varchar(50) not null,
+    kind varchar(40) not null,
+    architecture varchar(40) not null,
+    technology varchar(40) not null,
+    lang varchar(80) not null,
+    db varchar(40) not null,
     note varchar(256),
     close_flag boolean not null default false,
     delete_flag boolean not null default false,
@@ -39,8 +39,7 @@ create table project_members(
     updated_at timestamp not null default current_timestamp,
     primary key (id),
     foreign key (project_id) references projects(id),
-    foreign key (user_id) references users(id),
-    foreign key (project_role_id) references project_roles(id)
+    foreign key (user_id) references users(id)
 );
 
 create table posts(

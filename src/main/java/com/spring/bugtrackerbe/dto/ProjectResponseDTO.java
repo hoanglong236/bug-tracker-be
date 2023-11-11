@@ -13,7 +13,6 @@ public class ProjectResponseDTO {
     private String db;
     private String note;
     private Boolean closeFlag;
-    private Boolean deleteFlag;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -30,7 +29,6 @@ public class ProjectResponseDTO {
             String db,
             String note,
             Boolean closeFlag,
-            Boolean deleteFlag,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
@@ -43,7 +41,6 @@ public class ProjectResponseDTO {
         this.db = db;
         this.note = note;
         this.closeFlag = closeFlag;
-        this.deleteFlag = deleteFlag;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -118,14 +115,6 @@ public class ProjectResponseDTO {
 
     public void setCloseFlag(Boolean closeFlag) {
         this.closeFlag = closeFlag;
-    }
-
-    public Boolean getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(Boolean deleteFlag) {
-        this.deleteFlag = deleteFlag;
     }
 
     public LocalDateTime getCreatedAt() {

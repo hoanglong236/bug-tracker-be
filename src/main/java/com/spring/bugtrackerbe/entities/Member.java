@@ -6,16 +6,16 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "project_members")
-public class ProjectMember {
+@Table(name = "members")
+public class Member {
 
     @Id
     @SequenceGenerator(
-            name = "project_members_seq",
-            sequenceName = "project_members_seq",
+            name = "members_seq",
+            sequenceName = "members_seq",
             allocationSize = 1
     )
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "project_members_seq")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "members_seq")
     private Integer id;
     private Integer projectId;
     private Integer userId;

@@ -92,25 +92,25 @@ public class ProjectController {
         }
     }
 
-    @PutMapping("/change-member-role/{memberId}/{role}")
-    @ResponseStatus(HttpStatus.OK)
-    public ProjectMemberResponseDTO changeMemberRole(
-            @PathVariable int memberId, @PathVariable ProjectRole role
+    @PostMapping("/details/{id}/add-member/{email}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public MemberResponseDTO addMember(
+            @PathVariable int id, @PathVariable String email
     ) {
         try {
-            return this.projectService.changeMemberRole(memberId, role);
+            return this.projectService.addMember(id, email);
         } catch (ResourcesNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }
     }
 
-    @PutMapping("/add-member")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ProjectMemberResponseDTO addMember(
-            @RequestBody @Valid ProjectMemberRequestDTO memberRequestDTO
+    @PutMapping("/change-member-role/{memberId}/{role}")
+    @ResponseStatus(HttpStatus.OK)
+    public MemberResponseDTO changeMemberRole(
+            @PathVariable int memberId, @PathVariable ProjectRole role
     ) {
         try {
-            return this.projectService.addMember(memberRequestDTO);
+            return this.projectService.changeMemberRole(memberId, role);
         } catch (ResourcesNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
         }

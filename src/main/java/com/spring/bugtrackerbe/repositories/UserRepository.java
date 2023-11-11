@@ -19,6 +19,11 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findByEmail(String email);
 
     @Transactional(readOnly = true)
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM User u WHERE u.deleteFlag = FALSE AND u.email = ?1")
+    boolean existsEmail(String email);
+
+    @Transactional(readOnly = true)
     @Query("SELECT u FROM User u " +
             "WHERE u.deleteFlag = FALSE AND u.role = 'USER'")
     Page<User> findUsersWithRoleUser(Pageable pageable);

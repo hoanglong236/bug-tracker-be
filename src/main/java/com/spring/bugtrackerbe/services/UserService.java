@@ -25,46 +25,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Page<UserResponseDTO> filterUsers(FilterUsersRequestDTO filterUsersRequestDTO) {
-        final Pageable pageable = PageRequest.of(
-                filterUsersRequestDTO.getPageNumber(),
-                filterUsersRequestDTO.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "id")
-        );
-        return this.userRepository.findUsersWithRoleUser(pageable)
-                .map(this::userToUserResponseDTO);
-    }
-
-    public UserResponseDTO disableUserById(int id) {
-        final User user = this.userRepository.findById(id)
-                .orElseThrow(() -> new ResourcesNotFoundException(UserMessage.NOT_FOUND));
-        user.setEnableFlag(false);
-        user.setUpdatedAt(LocalDateTime.now());
-
-        final User updatedUser = this.userRepository.save(user);
-        return userToUserResponseDTO(updatedUser);
-    }
-
-    public UserResponseDTO enableUserById(int id) {
-        final User user = this.userRepository.findById(id)
-                .orElseThrow(() -> new ResourcesNotFoundException(UserMessage.NOT_FOUND));
-        user.setEnableFlag(true);
-        user.setUpdatedAt(LocalDateTime.now());
-
-        final User updatedUser = this.userRepository.save(user);
-        return userToUserResponseDTO(updatedUser);
-    }
-
-    public void deleteUserById(int id) {
-        final User user = this.userRepository.findById(id)
-                .orElseThrow(() -> new ResourcesNotFoundException(UserMessage.NOT_FOUND));
-        user.setDeleteFlag(true);
-        user.setUpdatedAt(LocalDateTime.now());
-
-        this.userRepository.save(user);
-    }
-
-    private UserResponseDTO userToUserResponseDTO(User user) {
+    private static UserResponseDTO toUserResponseDTO(User user) {
         return new UserResponseDTO(
                 user.getId(),
                 user.getEmail(),
@@ -74,5 +35,44 @@ public class UserService {
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );
+    }
+
+    public Page<UserResponseDTO> filterUsers(FilterUsersRequestDTO filterUsersRequestDTO) {
+        final Pageable pageable = PageRequest.of(
+                filterUsersRequestDTO.getPageNumber(),
+                filterUsersRequestDTO.getPageSize(),
+                Sort.by(Sort.Direction.DESC, "id")
+        );
+        return this.userRepository.findUsersWithRoleUser(pageable)
+                .map(UserService::toUserResponseDTO);
+    }
+
+    public UserResponseDTO disableUserById(int id) {
+        final User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResourcesNotFoundException(UserMessage.NOT_FOUND));
+        user.setEnableFlag(false);
+        user.setUpdatedAt(LocalDateTime.now());
+
+        final User updatedUser = this.userRepository.save(user);
+        return toUserResponseDTO(updatedUser);
+    }
+
+    public UserResponseDTO enableUserById(int id) {
+        final User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResourcesNotFoundException(UserMessage.NOT_FOUND));
+        user.setEnableFlag(true);
+        user.setUpdatedAt(LocalDateTime.now());
+
+        final User updatedUser = this.userRepository.save(user);
+        return toUserResponseDTO(updatedUser);
+    }
+
+    public void deleteUserById(int id) {
+        final User user = this.userRepository.findById(id)
+                .orElseThrow(() -> new ResourcesNotFoundException(UserMessage.NOT_FOUND));
+        user.setDeleteFlag(true);
+        user.setUpdatedAt(LocalDateTime.now());
+
+        this.userRepository.save(user);
     }
 }

@@ -4,33 +4,36 @@ import com.spring.bugtrackerbe.enums.ProjectRole;
 
 import java.time.LocalDateTime;
 
-public class ProjectMemberResponseDTO {
+public class MemberResponseDTO {
 
     private Integer id;
     private Integer projectId;
     private Integer userId;
+    private String email;
+    private String name;
     private ProjectRole role;
-    private Boolean deleteFlag;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public ProjectMemberResponseDTO() {
+    public MemberResponseDTO() {
     }
 
-    public ProjectMemberResponseDTO(
+    public MemberResponseDTO(
             Integer id,
             Integer projectId,
             Integer userId,
+            String email,
+            String name,
             ProjectRole role,
-            Boolean deleteFlag,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
         this.id = id;
         this.projectId = projectId;
         this.userId = userId;
+        this.email = email;
+        this.name = name;
         this.role = role;
-        this.deleteFlag = deleteFlag;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -59,20 +62,28 @@ public class ProjectMemberResponseDTO {
         this.userId = userId;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public ProjectRole getRole() {
         return role;
     }
 
     public void setRole(ProjectRole role) {
         this.role = role;
-    }
-
-    public Boolean getDeleteFlag() {
-        return deleteFlag;
-    }
-
-    public void setDeleteFlag(Boolean deleteFlag) {
-        this.deleteFlag = deleteFlag;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -1,15 +1,17 @@
 package com.spring.bugtrackerbe.services;
 
 import com.spring.bugtrackerbe.dto.*;
+import com.spring.bugtrackerbe.entities.Member;
 import com.spring.bugtrackerbe.entities.Project;
-import com.spring.bugtrackerbe.entities.ProjectMember;
+import com.spring.bugtrackerbe.entities.User;
 import com.spring.bugtrackerbe.enums.ProjectRole;
 import com.spring.bugtrackerbe.exceptions.ResourcesAlreadyExistsException;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
-import com.spring.bugtrackerbe.mappers.ProjectMapper;
 import com.spring.bugtrackerbe.messages.ProjectMessage;
-import com.spring.bugtrackerbe.repositories.ProjectMemberRepository;
+import com.spring.bugtrackerbe.repositories.ICustomMemberRepository;
+import com.spring.bugtrackerbe.repositories.MemberRepository;
 import com.spring.bugtrackerbe.repositories.ProjectRepository;
+import com.spring.bugtrackerbe.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,18 +27,67 @@ import java.util.Objects;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final ProjectMemberRepository projectMemberRepository;
-    private final ProjectMapper projectMapper;
+    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
+    private final ICustomMemberRepository customMemberRepository;
 
     @Autowired
     public ProjectService(
             ProjectRepository projectRepository,
-            ProjectMemberRepository projectMemberRepository,
-            ProjectMapper projectMapper
+            UserRepository userRepository,
+            MemberRepository memberRepository,
+            ICustomMemberRepository customMemberRepository
     ) {
         this.projectRepository = projectRepository;
-        this.projectMemberRepository = projectMemberRepository;
-        this.projectMapper = projectMapper;
+        this.userRepository = userRepository;
+        this.memberRepository = memberRepository;
+        this.customMemberRepository = customMemberRepository;
+    }
+
+    private static Project toProject(ProjectRequestDTO projectRequestDTO) {
+        final Project project = new Project();
+
+        project.setName(projectRequestDTO.getName());
+        project.setKind(projectRequestDTO.getKind());
+        project.setArchitecture(projectRequestDTO.getArchitecture());
+        project.setTechnology(projectRequestDTO.getTechnology());
+        project.setLang(projectRequestDTO.getLang());
+        project.setDb(projectRequestDTO.getDb());
+        project.setNote(projectRequestDTO.getNote());
+        project.setCloseFlag(projectRequestDTO.getCloseFlag());
+
+        return project;
+    }
+
+    private static ProjectResponseDTO toProjectResponseDTO(Project project) {
+        return new ProjectResponseDTO(
+                project.getId(),
+                project.getName(),
+                project.getKind(),
+                project.getArchitecture(),
+                project.getTechnology(),
+                project.getLang(),
+                project.getDb(),
+                project.getNote(),
+                project.getCloseFlag(),
+                project.getCreatedAt(),
+                project.getUpdatedAt()
+        );
+    }
+
+    private static MemberResponseDTO toMemberResponseDTO(
+            Member member, User memberUser
+    ) {
+        return new MemberResponseDTO(
+                member.getId(),
+                member.getProjectId(),
+                member.getUserId(),
+                memberUser.getEmail(),
+                memberUser.getName(),
+                member.getRole(),
+                member.getCreatedAt(),
+                member.getUpdatedAt()
+        );
     }
 
     public Page<ProjectResponseDTO> filterProjects(
@@ -48,13 +99,13 @@ public class ProjectService {
                 Sort.by(Sort.Direction.DESC, "id")
         );
         return this.projectRepository.filterProjects(pageable)
-                .map(this.projectMapper::toResponse);
+                .map(ProjectService::toProjectResponseDTO);
     }
 
     public ProjectResponseDTO getProjectById(int id) {
         final Project project = this.projectRepository.findById(id)
                 .orElseThrow(() -> new ResourcesNotFoundException(ProjectMessage.NOT_FOUND));
-        return this.projectMapper.toResponse(project);
+        return toProjectResponseDTO(project);
     }
 
     public ProjectResponseDTO createProject(ProjectRequestDTO projectRequestDTO) {
@@ -63,9 +114,8 @@ public class ProjectService {
             throw new ResourcesAlreadyExistsException(ProjectMessage.NAME_ALREADY_EXISTS);
         }
 
-        final Project savedProject = this.projectRepository
-                .save(this.projectMapper.toProject(projectRequestDTO));
-        return this.projectMapper.toResponse(savedProject);
+        final Project project = toProject(projectRequestDTO);
+        return toProjectResponseDTO(this.projectRepository.save(project));
     }
 
     public ProjectResponseDTO updateProject(int id, ProjectRequestDTO projectRequestDTO) {
@@ -82,8 +132,7 @@ public class ProjectService {
         project.setCloseFlag(projectRequestDTO.getCloseFlag());
         project.setUpdatedAt(LocalDateTime.now());
 
-        final Project updatedProject = this.projectRepository.save(project);
-        return this.projectMapper.toResponse(updatedProject);
+        return toProjectResponseDTO(this.projectRepository.save(project));
     }
 
     public void deleteProjectById(int id) {
@@ -98,38 +147,47 @@ public class ProjectService {
     public ProjectDetailsResponseDTO getProjectDetailsById(int id) {
         final Project project = this.projectRepository.findById(id)
                 .orElseThrow(() -> new ResourcesNotFoundException(ProjectMessage.NOT_FOUND));
-        final List<ProjectMember> members = this.projectMemberRepository.findByProjectId(id);
-        return this.projectMapper.toProjectDetailsResponseDTO(project, members);
+        final List<MemberResponseDTO> memberResponseDTOs = this.customMemberRepository
+                .findMemberResponseDTOByProjectId(id);
+
+        return new ProjectDetailsResponseDTO(toProjectResponseDTO(project), memberResponseDTOs);
     }
 
-    public ProjectMemberResponseDTO changeMemberRole(int memberId, ProjectRole role) {
-        final ProjectMember projectMember = this.projectMemberRepository.findById(memberId)
-                .orElseThrow(() -> new ResourcesNotFoundException(ProjectMessage.MEMBER_NOT_FOUND));
-        projectMember.setRole(role);
-        projectMember.setUpdatedAt(LocalDateTime.now());
-
-        final ProjectMember savedMember = this.projectMemberRepository.save(projectMember);
-        return this.projectMapper.toProjectMemberResponse(savedMember);
-    }
-
-    public ProjectMemberResponseDTO addMember(ProjectMemberRequestDTO memberRequestDTO) {
-        if (this.projectRepository.findById(memberRequestDTO.getProjectId()).isEmpty()) {
-            throw new ResourcesNotFoundException(ProjectMessage.PROJECT_ID_INVALID);
+    public MemberResponseDTO addMember(int projectId, String memberEmail) {
+        if (!this.projectRepository.existsById(projectId)) {
+            throw new ResourcesNotFoundException(ProjectMessage.NOT_FOUND);
         }
-        // TODO: check user id exist in users table
-        //  and user id not exist in project_members table
+        final User user = this.userRepository.findByEmail(memberEmail)
+                .orElseThrow(() -> new ResourcesNotFoundException(ProjectMessage.MEMBER_NOT_FOUND));
 
-        final ProjectMember member = this.projectMapper.toProjectMember(memberRequestDTO);
-        return this.projectMapper.toProjectMemberResponse(
-                this.projectMemberRepository.save(member));
+        final Member member = new Member();
+        member.setProjectId(projectId);
+        member.setUserId(user.getId());
+        member.setRole(ProjectRole.MEMBER);
+
+        final Member savedMember = this.memberRepository.save(member);
+        return toMemberResponseDTO(savedMember, user);
+    }
+
+    public MemberResponseDTO changeMemberRole(int memberId, ProjectRole role) {
+        final Member member = this.memberRepository.findById(memberId)
+                .orElseThrow(() -> new ResourcesNotFoundException(ProjectMessage.MEMBER_NOT_FOUND));
+        member.setRole(role);
+        member.setUpdatedAt(LocalDateTime.now());
+
+        final Member savedMember = this.memberRepository.save(member);
+        final User user = this.userRepository.findById(savedMember.getUserId())
+                .orElseThrow(() -> new ResourcesNotFoundException(ProjectMessage.MEMBER_NOT_FOUND));
+
+        return toMemberResponseDTO(savedMember, user);
     }
 
     public void removeMember(int memberId) {
-        final ProjectMember member = this.projectMemberRepository.findById(memberId)
+        final Member member = this.memberRepository.findById(memberId)
                 .orElseThrow(() -> new ResourcesNotFoundException(ProjectMessage.MEMBER_NOT_FOUND));
         member.setDeleteFlag(true);
         member.setUpdatedAt(LocalDateTime.now());
 
-        this.projectMemberRepository.save(member);
+        this.memberRepository.save(member);
     }
 }

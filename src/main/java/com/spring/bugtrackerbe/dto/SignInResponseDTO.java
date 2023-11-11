@@ -4,6 +4,9 @@ public class SignInResponseDTO {
 
     private String authorizationToken;
 
+    public SignInResponseDTO() {
+    }
+
     public SignInResponseDTO(String authorizationToken) {
         this.authorizationToken = authorizationToken;
     }

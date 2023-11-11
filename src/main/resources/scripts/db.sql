@@ -29,7 +29,7 @@ create table projects(
     primary key (id)
 );
 
-create table project_members(
+create table members(
     id int,
     project_id int not null,
     user_id int not null,
@@ -72,8 +72,8 @@ create table post_files(
     foreign key (post_id) references posts(id)
 );
 
-create sequence projects_seq increment 1 start 1;
-create sequence project_members_seq increment 1 start 1;
 create sequence users_seq increment 1 start 1;
+create sequence projects_seq increment 1 start 1;
+create sequence members_seq increment 1 start 1;
 create sequence posts_seq increment 1 start 1;
 create sequence post_files_seq increment 1 start 1;

@@ -27,5 +27,11 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
     @Transactional(readOnly = true)
     @Query("SELECT CASE WHEN COUNT(p) > 0 THEN TRUE ELSE FALSE END " +
             "FROM Project p WHERE p.deleteFlag = FALSE AND p.name = ?1")
-    Boolean existsProjectName(String name);
+    boolean existsProjectName(String name);
+
+    @Transactional(readOnly = true)
+    @Query("SELECT CASE WHEN COUNT(p) > 0 THEN TRUE ELSE FALSE END " +
+            "FROM Project p WHERE p.deleteFlag = FALSE AND p.id = ?1")
+    @Override
+    boolean existsById(@NonNull Integer id);
 }

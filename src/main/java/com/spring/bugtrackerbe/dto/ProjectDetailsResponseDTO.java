@@ -5,12 +5,12 @@ import java.util.List;
 public class ProjectDetailsResponseDTO {
 
     private ProjectResponseDTO project;
-    private List<ProjectMemberResponseDTO> members;
+    private List<MemberResponseDTO> members;
 
     public ProjectDetailsResponseDTO() {
     }
 
-    public ProjectDetailsResponseDTO(ProjectResponseDTO project, List<ProjectMemberResponseDTO> members) {
+    public ProjectDetailsResponseDTO(ProjectResponseDTO project, List<MemberResponseDTO> members) {
         this.project = project;
         this.members = members;
     }
@@ -23,11 +23,11 @@ public class ProjectDetailsResponseDTO {
         this.project = project;
     }
 
-    public List<ProjectMemberResponseDTO> getMembers() {
+    public List<MemberResponseDTO> getMembers() {
         return members;
     }
 
-    public void setMembers(List<ProjectMemberResponseDTO> members) {
+    public void setMembers(List<MemberResponseDTO> members) {
         this.members = members;
     }
 }

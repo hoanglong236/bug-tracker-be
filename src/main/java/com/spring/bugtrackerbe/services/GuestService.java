@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class GuestService {
 
-
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
@@ -48,7 +47,7 @@ public class GuestService {
     }
 
     private void signUp(SignUpRequestDTO signUpRequestDTO, UserRole role) {
-        if (this.userRepository.findByEmail(signUpRequestDTO.getEmail()).isPresent()) {
+        if (this.userRepository.existsEmail(signUpRequestDTO.getEmail())) {
             throw new ResourcesAlreadyExistsException(UserMessage.EMAIL_ALREADY_EXISTS);
         }
         final User user = new User();

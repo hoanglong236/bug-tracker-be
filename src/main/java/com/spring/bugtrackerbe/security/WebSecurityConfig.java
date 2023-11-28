@@ -43,8 +43,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(
-            HttpSecurity http,
-            HandlerMappingIntrospector introspector
+            HttpSecurity http, HandlerMappingIntrospector introspector
     ) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(corsConfigurer ->

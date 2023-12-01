@@ -9,7 +9,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,12 +48,13 @@ public class WebSecurityConfig {
         http.cors(corsConfigurer ->
                 corsConfigurer.configurationSource(this.corsConfigurationSource()));
 
-        final MvcRequestMatcher.Builder mvcMatcherBuilder =
-                new MvcRequestMatcher.Builder(introspector);
-        http.authorizeHttpRequests(authorize ->
-                authorize
-                        .requestMatchers(mvcMatcherBuilder.pattern(PUBLIC_API_PATTERN)).permitAll()
-                        .anyRequest().authenticated()
+        final MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
+        http.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(
+                        mvcMatcherBuilder.pattern(PUBLIC_API_PATTERN),
+                        mvcMatcherBuilder.pattern("/error/**")
+                ).permitAll()
+                .anyRequest().authenticated()
         );
 
         http.sessionManagement(sessionConfig ->
@@ -94,13 +94,5 @@ public class WebSecurityConfig {
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer(HandlerMappingIntrospector introspector) {
-        final MvcRequestMatcher.Builder mvcMatcherBuilder =
-                new MvcRequestMatcher.Builder(introspector);
-        return (web) -> web.ignoring()
-                .requestMatchers(mvcMatcherBuilder.pattern("/error/**"));
     }
 }

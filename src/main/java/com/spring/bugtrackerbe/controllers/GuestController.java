@@ -1,7 +1,7 @@
 package com.spring.bugtrackerbe.controllers;
 
 import com.spring.bugtrackerbe.dto.SignInRequestDTO;
-import com.spring.bugtrackerbe.dto.SignInResponseDTO;
+import com.spring.bugtrackerbe.dto.response.SignInResponseDTO;
 import com.spring.bugtrackerbe.dto.SignUpRequestDTO;
 import com.spring.bugtrackerbe.exceptions.ResourcesAlreadyExistsException;
 import com.spring.bugtrackerbe.messages.CommonMessage;

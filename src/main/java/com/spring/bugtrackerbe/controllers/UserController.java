@@ -1,7 +1,7 @@
 package com.spring.bugtrackerbe.controllers;
 
 import com.spring.bugtrackerbe.dto.FilterUsersRequestDTO;
-import com.spring.bugtrackerbe.dto.UserResponseDTO;
+import com.spring.bugtrackerbe.dto.response.UserResponseDTO;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
 import com.spring.bugtrackerbe.messages.CommonMessage;
 import com.spring.bugtrackerbe.services.UserService;

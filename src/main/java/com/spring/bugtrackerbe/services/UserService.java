@@ -1,28 +1,30 @@
 package com.spring.bugtrackerbe.services;
 
-import com.spring.bugtrackerbe.dto.FilterUsersRequestDTO;
+import com.spring.bugtrackerbe.dto.request.FilterUsersRequestDTO;
 import com.spring.bugtrackerbe.dto.response.UserResponseDTO;
 import com.spring.bugtrackerbe.entities.User;
 import com.spring.bugtrackerbe.exceptions.ResourcesNotFoundException;
+import com.spring.bugtrackerbe.messages.CommonMessage;
 import com.spring.bugtrackerbe.messages.UserMessage;
+import com.spring.bugtrackerbe.repositories.UserJdbcRepository;
 import com.spring.bugtrackerbe.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserJdbcRepository userJdbcRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserJdbcRepository userJdbcRepository) {
         this.userRepository = userRepository;
+        this.userJdbcRepository = userJdbcRepository;
     }
 
     private static UserResponseDTO toUserResponseDTO(User user) {
@@ -37,14 +39,13 @@ public class UserService {
         );
     }
 
-    public Page<UserResponseDTO> filterUsers(FilterUsersRequestDTO filterUsersRequestDTO) {
-        final Pageable pageable = PageRequest.of(
-                filterUsersRequestDTO.getPageNumber(),
-                filterUsersRequestDTO.getPageSize(),
-                Sort.by(Sort.Direction.DESC, "id")
-        );
-        return this.userRepository.findUsersWithRoleUser(pageable)
-                .map(UserService::toUserResponseDTO);
+    public Page<UserResponseDTO> filterUsers(FilterUsersRequestDTO filterRequestDTO)
+            throws IllegalArgumentException {
+        final List<String> acceptSortFields = List.of("id", "updated_at");
+        if (!acceptSortFields.contains(filterRequestDTO.getSortField())) {
+            throw new IllegalArgumentException(CommonMessage.SORT_FIELD_NOT_ACCEPTED);
+        }
+        return this.userJdbcRepository.filterUsers(filterRequestDTO);
     }
 
     public UserResponseDTO disableUserById(int id) {

@@ -1,4 +1,4 @@
-package com.spring.bugtrackerbe.dto;
+package com.spring.bugtrackerbe.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

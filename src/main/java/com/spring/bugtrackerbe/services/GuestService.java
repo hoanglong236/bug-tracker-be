@@ -1,8 +1,8 @@
 package com.spring.bugtrackerbe.services;
 
-import com.spring.bugtrackerbe.dto.SignInRequestDTO;
+import com.spring.bugtrackerbe.dto.request.SignInRequestDTO;
+import com.spring.bugtrackerbe.dto.request.SignUpRequestDTO;
 import com.spring.bugtrackerbe.dto.response.SignInResponseDTO;
-import com.spring.bugtrackerbe.dto.SignUpRequestDTO;
 import com.spring.bugtrackerbe.entities.User;
 import com.spring.bugtrackerbe.enums.UserRole;
 import com.spring.bugtrackerbe.exceptions.ResourcesAlreadyExistsException;

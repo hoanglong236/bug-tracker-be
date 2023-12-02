@@ -1,4 +1,4 @@
-package com.spring.bugtrackerbe.dto;
+package com.spring.bugtrackerbe.dto.request;
 
 public class SignUpRequestDTO {
 
